@@ -2,17 +2,18 @@ import React from "react";
 import CIcon from "@coreui/icons-react";
 import {
   cil3d,
-  cilBell,
-  cilCalculator, cilCart,
-  cilChartPie, cilChevronDoubleRight,
-  cilCursor,
-  cilDescription, cilDollar,
-  cilDrop, cilFire, cilLaptop,
-  cilScreenDesktop, cilShareBoxed,
+  cilCart,
+  cilChevronDoubleRight,
+  cilDollar,
+  cilFire,
+  cilLaptop,
+  cilScreenDesktop,
   cilSpeedometer,
-  cilStar, cilSwapHorizontal, cilUser
+  cilSwapHorizontal,
+  cilUser
 } from "@coreui/icons";
-import { CNavGroup, CNavItem, CNavTitle } from "@coreui/react";
+import {CNavGroup, CNavItem, CNavTitle} from "@coreui/react";
+
 const json = sessionStorage.getItem('role');
 let role = false;
 if (json !== null && json !== undefined) {
@@ -22,12 +23,31 @@ if (json !== null && json !== undefined) {
     console.log(e);
   }
 }
+
 const _nav_admin = [
+  {
+    component: CNavGroup,
+    name: 'Matériels',
+    to: '/materials',
+    icon: <CIcon icon={cilChevronDoubleRight} customClassName="nav-icon"/>,
+    items: [
+      {
+        component: CNavItem,
+        name: 'Liste',
+        to: '/materials/list',
+      },
+      {
+        component: CNavItem,
+        name: "Formulaire d'ajout",
+        to: '/materials/create',
+      }
+    ],
+  },
   {
     component: CNavItem,
     name: 'Tableau de bord',
     to: '/dashboard',
-    icon: <CIcon icon={cilSpeedometer} customClassName="nav-icon" />,
+    icon: <CIcon icon={cilSpeedometer} customClassName="nav-icon"/>,
   },
   {
     component: CNavTitle,
@@ -37,7 +57,7 @@ const _nav_admin = [
     component: CNavGroup,
     name: 'Processeur',
     to: '/cpus',
-    icon: <CIcon icon={cilChevronDoubleRight} customClassName="nav-icon" />,
+    icon: <CIcon icon={cilChevronDoubleRight} customClassName="nav-icon"/>,
     items: [
       {
         component: CNavItem,
@@ -55,7 +75,7 @@ const _nav_admin = [
     component: CNavGroup,
     name: 'Marque',
     to: '/brands',
-    icon: <CIcon icon={cilFire} customClassName="nav-icon" />,
+    icon: <CIcon icon={cilFire} customClassName="nav-icon"/>,
     items: [
       {
         component: CNavItem,
@@ -73,7 +93,7 @@ const _nav_admin = [
     component: CNavGroup,
     name: "Type d'écran",
     to: '/screen-types',
-    icon: <CIcon icon={cilScreenDesktop} customClassName="nav-icon" />,
+    icon: <CIcon icon={cilScreenDesktop} customClassName="nav-icon"/>,
     items: [
       {
         component: CNavItem,
@@ -91,7 +111,7 @@ const _nav_admin = [
     component: CNavGroup,
     name: "Modèle de laptop",
     to: '/laptop-models',
-    icon: <CIcon icon={cilLaptop} customClassName="nav-icon" />,
+    icon: <CIcon icon={cilLaptop} customClassName="nav-icon"/>,
     items: [
       {
         component: CNavItem,
@@ -113,7 +133,7 @@ const _nav_admin = [
     component: CNavGroup,
     name: "Utilisateurs",
     to: '/users',
-    icon: <CIcon icon={cilUser} customClassName="nav-icon" />,
+    icon: <CIcon icon={cilUser} customClassName="nav-icon"/>,
     items: [
       {
         component: CNavItem,
@@ -126,7 +146,7 @@ const _nav_admin = [
     component: CNavItem,
     name: 'Stock',
     to: '/stock/list',
-    icon: <CIcon icon={cil3d} customClassName="nav-icon" />,
+    icon: <CIcon icon={cil3d} customClassName="nav-icon"/>,
   },
   {
     component: CNavTitle,
@@ -136,35 +156,30 @@ const _nav_admin = [
     component: CNavItem,
     name: "Achat de laptop",
     to: '/laptop-models/buy',
-    icon: <CIcon icon={cilCart} customClassName="nav-icon" />
-  },
-  {
-    component: CNavGroup,
-    name: "Transferts",
-    to: '/stock',
-    icon: <CIcon icon={cilSwapHorizontal} customClassName="nav-icon" />,
-    items: [
-      {
-        component: CNavItem,
-        name: 'Formulaire de transfert',
-        to: '/stock/dispatch/',
-      },
-      {
-        component: CNavItem,
-        name: 'Liste des transferts en attente',
-        to: '/stock/dispatch/pending/list',
-      },
-    ]
+    icon: <CIcon icon={cilCart} customClassName="nav-icon"/>
   }
 ]
 
 
 const _nav_user = [
   {
+    component: CNavGroup,
+    name: 'Matériels',
+    to: '/materials',
+    icon: <CIcon icon={cilChevronDoubleRight} customClassName="nav-icon"/>,
+    items: [
+      {
+        component: CNavItem,
+        name: 'Liste',
+        to: '/materials/list',
+      }
+    ],
+  },
+  {
     component: CNavItem,
     name: 'Stock',
     to: '/stock/list',
-    icon: <CIcon icon={cil3d} customClassName="nav-icon" />,
+    icon: <CIcon icon={cil3d} customClassName="nav-icon"/>,
   },
   {
     component: CNavTitle,
@@ -174,7 +189,7 @@ const _nav_user = [
     component: CNavGroup,
     name: "Vente de laptop",
     to: '/laptop-models/sell',
-    icon: <CIcon icon={cilDollar} customClassName="nav-icon" />,
+    icon: <CIcon icon={cilDollar} customClassName="nav-icon"/>,
     items: [
       {
         component: CNavItem,
@@ -192,7 +207,7 @@ const _nav_user = [
     component: CNavGroup,
     name: "Transferts",
     to: '/stock',
-    icon: <CIcon icon={cilSwapHorizontal} customClassName="nav-icon" />,
+    icon: <CIcon icon={cilSwapHorizontal} customClassName="nav-icon"/>,
     items: [
       {
         component: CNavItem,

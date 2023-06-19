@@ -15,8 +15,8 @@ const ConfiguredList: React.FC = () => {
   const apiCall = findAllMaterial;
   const handlePageChange = (page: number) => {
     setLoading(true);
-    setCurrentPage(page);
-    if (currentPage === page) {
+    if (currentPage !== page) {
+      setCurrentPage(page);
       filterData();
     }
   };
@@ -66,8 +66,10 @@ const ConfiguredList: React.FC = () => {
     handlePageChange(1);
   }, [triggerFilter]);
   useEffect(() => {
-    filter.page = currentPage;
-    filterData();
+    if (filter.page !== currentPage) {
+      filter.page = currentPage;
+      filterData();
+    }
   }, [currentPage]);
   return (
     <List

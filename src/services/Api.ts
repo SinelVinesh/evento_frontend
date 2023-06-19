@@ -1,7 +1,7 @@
 // @ts-ignore
 
 import axios from "axios";
-import {AuthRequest, MaterialFilter} from "../common/appTypes";
+import {AuthRequest, Material, MaterialFilter} from "../common/appTypes";
 
 /* api calls */
 // Generic
@@ -77,11 +77,14 @@ export const login = (data: AuthRequest) => {
 }
 
 // Material
-const materialUrl = `${base}/material`
+const materialUrl = `${base}/materials`
 export const findAllMaterial = (filter?: MaterialFilter) => {
   const filters = [
     {field: 'page', name: 'page'}
   ]
   let url = buildUrlWithFilter(materialUrl, filter, filters)
   return getCall(url, true)
+}
+export const createMaterial = (data?: Material) => {
+  return postCall(materialUrl, data, true)
 }

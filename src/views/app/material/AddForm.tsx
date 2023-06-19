@@ -1,39 +1,44 @@
-import React, { useEffect, useState } from "react";
-import { FieldProperties } from "../../../common/types";
-import { FieldType, ValidationType } from "../../../common/enums";
-import { Client} from "../../../common/appTypes";
+import React, {useState} from "react";
+import {FieldProperties} from "../../../common/types";
+import {FieldType, ValidationType} from "../../../common/enums";
 import Form from "../../../components/generic/Form";
 import withReactContent from "sweetalert2-react-content";
-import Swal, { SweetAlertIcon } from "sweetalert2";
+import Swal, {SweetAlertIcon} from "sweetalert2";
 import Spinner from "../../../components/Spinner";
-import { useNavigate } from "react-router-dom";
-import { createClient } from "services/Api";
+import {useNavigate} from "react-router-dom";
+import {createMaterial} from "services/Api";
+import {Material} from "../../../common/appTypes";
+import {InputAdornment} from "@mui/material";
 
 const ConfiguredForm: React.FC = () => {
-  const [data] = useState({} as Client);
+  const [data] = useState({} as Material);
   const navigate = useNavigate();
-  const apiCall = createClient;
-  const redirectUrl = "/clients/list";
+  const apiCall = createMaterial;
+  const redirectUrl = "/materials/list";
   const properties: FieldProperties[] = [
     {
-      label: "Nom d'utilisateur",
-      name: "username",
+      label: "Nom",
+      name: "name",
       type: FieldType.text,
-      selector: (data) => data?.username,
-      onChange: (e) => (data.username = e.target.value),
+      selector: (data) => data?.name,
+      onChange: (e) => (data.name = e.target.value),
       validators: [
-        { validationType: ValidationType.required, feedback: "Veuillez saisir un nom d'utilisateur" }
+        {validationType: ValidationType.required, feedback: "Veuillez saisir un nom"}
       ]
     },
     {
-      label: "Mot de passe",
-      name: "password",
-      type: FieldType.password,
-      selector: (data) => data?.password,
-      onChange: (e) => (data.password = e.target.value),
+      label: "Prix de location",
+      name: "rentPrice",
+      type: FieldType.number,
+      selector: (data) => data?.rentPrice,
+      onChange: (e) => (data.rentPrice = e.target.value),
       validators: [
-        { validationType: ValidationType.required, feedback: "Veuillez saisir un mot de passe" }
-      ]
+        {validationType: ValidationType.required, feedback: "Veuillez saisir un prix de location"},
+        {validationType: ValidationType.min, args: {value: 0}, feedback: "Le prix doit être positif"}
+      ],
+      inputProps: {
+        startAdornment: <InputAdornment position="start">Ar</InputAdornment>
+      }
     },
   ];
   const submit = () => {
@@ -41,8 +46,8 @@ const ConfiguredForm: React.FC = () => {
     const loading = {
       title: "Ajout en cours...",
       html: (
-        <div style={{ overflow: "hidden" }}>
-          <Spinner />
+        <div style={{overflow: "hidden"}}>
+          <Spinner/>
         </div>
       ),
       allowOutsideClick: false,
@@ -55,7 +60,7 @@ const ConfiguredForm: React.FC = () => {
       .then((response) => {
         const swalData = {
           icon: "success" as SweetAlertIcon,
-          title: "Le Client a été ajouté avec succès",
+          title: "Le Matériel a été ajouté avec succès",
           timer: 1000,
           showConfirmButton: false
         };
@@ -77,7 +82,7 @@ const ConfiguredForm: React.FC = () => {
   };
   return (
     <Form
-      title={"Ajouter un Client"}
+      title={"Ajouter un Matériel"}
       data={data}
       properties={properties}
       submitFn={submit}
