@@ -11,7 +11,7 @@ interface HasName extends HasId {
   name?: string
 }
 
-interface Paginated {
+export interface Paginated {
   page?: number
 }
 
@@ -35,4 +35,12 @@ export interface Material extends HasName {
 }
 
 export interface MaterialFilter extends Paginated {
+}
+
+export interface LocationType extends HasName {
+}
+
+export interface Location extends HasName {
+  maxCapacity?: number
+  locationType?: LocationType
 }

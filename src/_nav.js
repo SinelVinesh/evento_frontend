@@ -27,19 +27,37 @@ if (json !== null && json !== undefined) {
 const _nav_admin = [
   {
     component: CNavGroup,
-    name: 'Matériels',
-    to: '/materials',
+    name: 'Type de lieu',
+    to: '/location-types',
     icon: <CIcon icon={cilChevronDoubleRight} customClassName="nav-icon"/>,
     items: [
       {
         component: CNavItem,
         name: 'Liste',
-        to: '/materials/list',
+        to: '/location-types/list',
       },
       {
         component: CNavItem,
         name: "Formulaire d'ajout",
-        to: '/materials/create',
+        to: '/location-types/create',
+      }
+    ],
+  },
+  {
+    component: CNavGroup,
+    name: 'Lieux',
+    to: '/locations',
+    icon: <CIcon icon={cilChevronDoubleRight} customClassName="nav-icon"/>,
+    items: [
+      {
+        component: CNavItem,
+        name: 'Liste',
+        to: '/locations/list',
+      },
+      {
+        component: CNavItem,
+        name: "Formulaire d'ajout",
+        to: '/locations/create',
       }
     ],
   },

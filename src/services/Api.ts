@@ -1,7 +1,7 @@
 // @ts-ignore
 
 import axios from "axios";
-import {AuthRequest, Material, MaterialFilter} from "../common/appTypes";
+import {AuthRequest, Material, MaterialFilter, Paginated} from "../common/appTypes";
 
 /* api calls */
 // Generic
@@ -87,4 +87,32 @@ export const findAllMaterial = (filter?: MaterialFilter) => {
 }
 export const createMaterial = (data?: Material) => {
   return postCall(materialUrl, data, true)
+}
+
+// Location type
+const locationTypeUrl = `${base}/location-types`
+export const findAllLocationType = (filter?: Paginated) => {
+  const filters = [
+    {field: 'page', name: 'page'}
+  ]
+  let url = buildUrlWithFilter(locationTypeUrl, filter, filters)
+  return getCall(url, true)
+}
+
+export const createLocationType = (data?: Material) => {
+  return postCall(locationTypeUrl, data, true)
+}
+
+// Location
+const locationUrl = `${base}/locations`
+export const findAllLocation = (filter?: Paginated) => {
+  const filters = [
+    {field: 'page', name: 'page'}
+  ]
+  let url = buildUrlWithFilter(locationUrl, filter, filters)
+  return getCall(url, true)
+}
+
+export const createLocation = (data?: Material) => {
+  return postCall(locationUrl, data, true)
 }
