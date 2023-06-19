@@ -13,6 +13,7 @@ const ConfiguredList: React.FC = () => {
   const [filter] = useState({page: 1} as Paginated);
   const [triggerFilter, setTriggerFilter] = useState(false);
   const apiCall = findAllEventEstimation;
+  const fnLink = (row: any) => `/events/${row.id}/update`;
   const handlePageChange = (page: number) => {
     setLoading(true);
     if (currentPage !== page) {
@@ -101,6 +102,7 @@ const ConfiguredList: React.FC = () => {
       onChangePage={handlePageChange}
       filterData={filter}
       filterFn={filterFn}
+      linkFn={fnLink}
     />
   );
 };

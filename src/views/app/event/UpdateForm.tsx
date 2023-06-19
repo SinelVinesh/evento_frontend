@@ -5,7 +5,7 @@ import Form from "../../../components/generic/Form";
 import withReactContent from "sweetalert2-react-content";
 import Swal, {SweetAlertIcon} from "sweetalert2";
 import Spinner from "../../../components/Spinner";
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import {
   Event,
   EventRatedExpense,
@@ -16,16 +16,18 @@ import {
   VariableExpense
 } from "../../../common/appTypes";
 import {
-  createEvent,
   findAllEventType,
   findAllLocation,
   findAllRatedExpense,
-  findAllVariableExpense
+  findAllVariableExpense,
+  getEvent,
+  updateEvent
 } from "../../../services/Api";
 import {InputAdornment} from "@mui/material";
 import {CButton} from "@coreui/react";
 import {Delete} from "@mui/icons-material";
 import {formatNumber} from "../../../services/Format";
+import {format} from "date-fns";
 
 const ConfiguredForm: React.FC = () => {
   const [data, setData] = useState({} as Event);
@@ -44,8 +46,11 @@ const ConfiguredForm: React.FC = () => {
   const [variableFakeId, setVariableFakeId] = useState(0);
   const [selectedEventVariableExpenses, setSelectedEventVariableExpenses] = useState<EventVariableExpense[]>([]);
 
+  const params = useParams();
+  const id = Number.parseInt(params.id as string);
   const navigate = useNavigate();
-  const apiCall = createEvent;
+  const apiSubmitCall = updateEvent;
+  const apiInitialCall = getEvent;
   const redirectUrl = "/events/list";
   const deleteButton = React.useMemo(() => {
     const handleDelete = () => {
@@ -61,6 +66,20 @@ const ConfiguredForm: React.FC = () => {
       </CButton>
     );
   }, [eventRatedExpenses, selectedEventRatedExpenses]);
+  const deleteButtonVariable = React.useMemo(() => {
+    const handleDelete = () => {
+      setEventVariableExpenses(
+        eventVariableExpenses.filter(
+          (detail) => selectedEventVariableExpenses.find((row) => row.id === detail.id) === undefined
+        )
+      );
+    };
+    return (
+      <CButton key={"delete"} onClick={handleDelete} color={"danger"}>
+        <Delete/>
+      </CButton>
+    );
+  }, [eventVariableExpenses, selectedEventVariableExpenses]);
   const properties: FieldProperties[] = [
     {
       label: "Nom",
@@ -88,7 +107,7 @@ const ConfiguredForm: React.FC = () => {
       name: "location",
       type: FieldType.select,
       options: locationList.map((eventType) => ({value: eventType.id!, label: eventType.name!})),
-      selector: (data) => data?.loaction?.id,
+      selector: (data) => data?.location?.id,
       onChange: (e) => (data.location = {id: e.target.value}),
       validators: [
         {validationType: ValidationType.required, feedback: "Veuillez choisir un lieu"}
@@ -112,7 +131,7 @@ const ConfiguredForm: React.FC = () => {
       label: "Date de début",
       name: "startDate",
       type: FieldType.datetime,
-      selector: (data) => data?.startDate,
+      selector: (data) => format(new Date(data?.startDate), "yyyy-MM-dd'T'HH:mm"),
       onChange: (e) => (data.startDate = new Date(e.target.value).getTime()),
       validators: [
         {validationType: ValidationType.required, feedback: "Veuillez saisir une date"},
@@ -127,7 +146,7 @@ const ConfiguredForm: React.FC = () => {
       label: "Date de fin",
       name: "endDate",
       type: FieldType.datetime,
-      selector: (data) => data?.endDate,
+      selector: (data) => format(new Date(data?.endDate), "yyyy-MM-dd'T'HH:mm"),
       onChange: (e) => (data.endDate = new Date(e.target.value).getTime()),
       validators: [
         {validationType: ValidationType.required, feedback: "Veuillez saisir une date"},
@@ -232,7 +251,7 @@ const ConfiguredForm: React.FC = () => {
           multipleSelectionHandler: ({selectedRows}: any) => {
             setSelectedEventVariableExpenses(selectedRows);
           },
-          contextActions: deleteButton
+          contextActions: deleteButtonVariable
         },
         data: eventVariableExpense,
         multipleData: eventVariableExpenses,
@@ -285,11 +304,11 @@ const ConfiguredForm: React.FC = () => {
       showConfirmButton: false
     };
     swal.fire(loading);
-    apiCall(data)
+    apiSubmitCall(data)
       .then((response) => {
         const swalData = {
           icon: "success" as SweetAlertIcon,
-          title: "Le type d'évènement a été ajouté avec succès",
+          title: "L'évènement a été mis a jour avec succès",
           timer: 1000,
           showConfirmButton: false
         };
@@ -302,7 +321,7 @@ const ConfiguredForm: React.FC = () => {
       .catch((error) => {
         const swalData = {
           icon: "error" as SweetAlertIcon,
-          title: "Une erreur est survenue lors de l'enregistrement",
+          title: "Une erreur est survenue lors de la mis a jour",
           text: error.response.data.message
         };
         swal.fire(swalData);
@@ -322,22 +341,42 @@ const ConfiguredForm: React.FC = () => {
     findAllVariableExpense().then((response) => {
       setVariableExpenseList(response.data.elements);
     });
+    apiInitialCall(id).then((response) => {
+      let initialData = response.data;
+      initialData.startDate = new Date(initialData.startDate).getTime();
+      initialData.endDate = new Date(initialData.endDate).getTime();
+      for (const expense of initialData.ratedExpenses) {
+        expense.id = ratedFakeId;
+        setRatedFakeId(ratedFakeId + 1)
+      }
+      for (const expense of initialData.variableExpenses) {
+        expense.id = variableFakeId;
+        setVariableFakeId(variableFakeId + 1)
+      }
+      setEventRatedExpenses(initialData.ratedExpenses);
+      setEventVariableExpenses(initialData.variableExpenses);
+      setData(initialData);
+    });
   }, [])
   return (
-    <Form
-      title={"Ajouter un type d'évènement"}
-      data={data}
-      properties={properties}
-      submitFn={submit}
-      submitText={"Enregistrer"}
-      formBottom={<>
-        <b>Estimation du devis :</b> {
-        formatNumber(
-          eventRatedExpenses.reduce((acc, cur) => acc + Number.parseInt(String(cur?.duration! * cur?.ratedExpense?.rentPrice!)), 0)
-          + eventVariableExpenses.reduce((acc, cur) => acc + Number.parseInt(String(cur?.amount === undefined ? 0 : cur?.amount)), 0)
-          + (data.locationPrice === undefined ? 0 : Number.parseInt(String(data.locationPrice))))} Ar
-      </>}
-    />
+    <>
+      {Object.keys(data).length > 0 && Object.keys(locationList).length > 0 && (
+        <Form
+          title={"Modifier un évènement"}
+          data={data}
+          properties={properties}
+          submitFn={submit}
+          submitText={"Enregistrer"}
+          formBottom={<>
+            <b>Estimation du devis :</b> {
+            formatNumber(
+              eventRatedExpenses.reduce((acc, cur) => acc + Number.parseInt(String(cur?.duration! * cur?.ratedExpense?.rentPrice!)), 0)
+              + eventVariableExpenses.reduce((acc, cur) => acc + Number.parseInt(String(cur?.amount === undefined ? 0 : cur?.amount)), 0)
+              + (data.locationPrice === undefined ? 0 : Number.parseInt(String(data.locationPrice))))} Ar
+          </>}
+        />
+      )}
+    </>
   );
 };
 

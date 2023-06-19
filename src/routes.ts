@@ -32,7 +32,7 @@ const EventTypeAddForm = React.lazy(() => import('./views/app/eventType/AddForm'
 // Evenements
 const EventList = React.lazy(() => import('./views/app/event/List'))
 const EventAddForm = React.lazy(() => import('./views/app/event/AddForm'))
-
+const EventUpdateForm = React.lazy(() => import('./views/app/event/UpdateForm'))
 const routes = [
   {path: '/monthly-profit/list', element: Login},
   {path: '/materials/list', element: MaterialList},
@@ -51,6 +51,7 @@ const routes = [
   {path: '/event-types/create', element: EventTypeAddForm},
   {path: '/events/list', element: EventList},
   {path: '/events/create', element: EventAddForm},
+  {path: '/events/:id/update', element: EventUpdateForm},
 ]
 
 export default routes

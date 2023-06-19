@@ -210,3 +210,11 @@ const eventUrl = `${base}/events`
 export const createEvent = (data?: Event) => {
   return postCall(eventUrl, data, true)
 }
+
+export const getEvent = (id: number) => {
+  return getCall(`${eventUrl}/${id}`, true)
+}
+
+export const updateEvent = (data?: Event) => {
+  return putCall(eventUrl, data, true)
+}

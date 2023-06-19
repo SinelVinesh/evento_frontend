@@ -14,6 +14,7 @@ export enum FieldType {
   imageGallery = 'image-gallery',
   numberInterval = 'number-interval',
   multiple = 'multiple',
+  hidden = 'hidden',
 }
 
 export enum ValidationType {

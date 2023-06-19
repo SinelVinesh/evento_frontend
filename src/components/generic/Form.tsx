@@ -1,11 +1,11 @@
-import React, { useState } from "react";
-import { CButton, CCard, CCardBody, CCardHeader, CCol, CFormLabel, CRow } from "@coreui/react";
-import { FormControl, InputLabel, MenuItem, Select, TextField } from "@mui/material";
+import React, {useState} from "react";
+import {CButton, CCard, CCardBody, CCardHeader, CCol, CFormLabel, CRow} from "@coreui/react";
+import {FormControl, InputLabel, MenuItem, Select, TextField} from "@mui/material";
 import EditableGallery from "./EditableGallery";
 import Datatable from "./Datatable";
-import { FieldProperties, MultipleEntriesFormOption } from "../../common/types";
-import { FieldType } from "../../common/enums";
-import { validate } from "../../services/Validation";
+import {FieldProperties, MultipleEntriesFormOption} from "../../common/types";
+import {FieldType} from "../../common/enums";
+import {validate} from "../../services/Validation";
 
 interface FormProps {
   data: any
@@ -16,22 +16,24 @@ interface FormProps {
   initialSubmitAllowed?: boolean
   className?: string
   bodyTop?: React.ReactNode
+  formBottom?: React.ReactNode
   title?: string
   noSubmint?: boolean
 }
 
 const Form: React.FC<FormProps> = ({
-  data,
-  properties,
-  submitFn,
-  multipleEntriesOption,
-  submitText,
-  initialSubmitAllowed = false,
-  className,
-  bodyTop,
-  title,
-  noSubmint
-}) => {
+                                     data,
+                                     properties,
+                                     submitFn,
+                                     multipleEntriesOption,
+                                     submitText,
+                                     initialSubmitAllowed = false,
+                                     className,
+                                     bodyTop,
+                                     title,
+                                     noSubmint,
+                                     formBottom,
+                                   }) => {
   const [removeInitialSubmit, setRemoveInitialSubmit] = useState(initialSubmitAllowed)
   const [feedbacks, setFeebacks] = useState({} as any)
   const isMultiple = multipleEntriesOption !== null && multipleEntriesOption != undefined
@@ -84,7 +86,7 @@ const Form: React.FC<FormProps> = ({
                   InputProps={property.inputProps}
                   InputLabelProps={
                     property.type === FieldType.date || property.type === FieldType.datetime
-                      ? { shrink: true }
+                      ? {shrink: true}
                       : {}
                   }
                   onBlur={() => {
@@ -93,10 +95,35 @@ const Form: React.FC<FormProps> = ({
                     let entry: any = {}
                     if (feedback !== undefined) {
                       entry[property.name!] = feedback
-                      setFeebacks({ ...feedbacks, ...entry })
+                      setFeebacks({...feedbacks, ...entry})
                     } else {
                       if (property.name! in feedbacks) {
-                        let newFeedbacks = { ...feedbacks }
+                        let newFeedbacks = {...feedbacks}
+                        delete newFeedbacks[property.name!]
+                        setFeebacks(newFeedbacks)
+                      }
+                    }
+                  }}
+                />
+              )}
+              {property.type === FieldType.hidden && (
+                <TextField
+                  type={property.type}
+                  defaultValue={property.selector(data)}
+                  name={property.name}
+                  fullWidth
+                  style={{display: 'none'}}
+                  InputProps={property.inputProps}
+                  onBlur={() => {
+                    setRemoveInitialSubmit(true)
+                    let feedback = validate(property.selector(data), property.validators)
+                    let entry: any = {}
+                    if (feedback !== undefined) {
+                      entry[property.name!] = feedback
+                      setFeebacks({...feedbacks, ...entry})
+                    } else {
+                      if (property.name! in feedbacks) {
+                        let newFeedbacks = {...feedbacks}
                         delete newFeedbacks[property.name!]
                         setFeebacks(newFeedbacks)
                       }
@@ -123,10 +150,10 @@ const Form: React.FC<FormProps> = ({
                       let entry: any = {}
                       if (feedback !== undefined) {
                         entry[property.intervalName!.min] = feedback
-                        setFeebacks({ ...feedbacks, ...entry })
+                        setFeebacks({...feedbacks, ...entry})
                       } else {
                         if (property.intervalName!.min in feedbacks) {
-                          let newFeedbacks = { ...feedbacks }
+                          let newFeedbacks = {...feedbacks}
                           delete newFeedbacks[property.intervalName!.min]
                           setFeebacks(newFeedbacks)
                         }
@@ -150,10 +177,10 @@ const Form: React.FC<FormProps> = ({
                       let entry: any = {}
                       if (feedback !== undefined) {
                         entry[property.intervalName!.max] = feedback
-                        setFeebacks({ ...feedbacks, ...entry })
+                        setFeebacks({...feedbacks, ...entry})
                       } else {
                         if (property.intervalName!.max in feedbacks) {
-                          let newFeedbacks = { ...feedbacks }
+                          let newFeedbacks = {...feedbacks}
                           delete newFeedbacks[property.intervalName!.max]
                           setFeebacks(newFeedbacks)
                         }
@@ -228,6 +255,11 @@ const Form: React.FC<FormProps> = ({
         ))}
         <CRow>
           <CCol sm={12}>
+            {formBottom}
+          </CCol>
+        </CRow>
+        <CRow>
+          <CCol sm={12}>
             <CButton
               color={'primary'}
               onClick={isMultiple ? multipleEntriesOption!.addFn : submitFn}
@@ -249,13 +281,13 @@ const Form: React.FC<FormProps> = ({
               clearRow={multipleEntriesOption!.toogleCleared}
             />
             {!noSubmint && (
-            <CButton
-              color={'primary'}
-              onClick={submitFn}
-              disabled={!removeInitialSubmit || Object.keys(feedbacks).length !== 0}
-            >
-              {submitText}
-            </CButton>
+              <CButton
+                color={'primary'}
+                onClick={submitFn}
+                disabled={!removeInitialSubmit || Object.keys(feedbacks).length !== 0}
+              >
+                {submitText}
+              </CButton>
             )}
           </>
         )}
