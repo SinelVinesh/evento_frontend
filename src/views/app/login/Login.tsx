@@ -1,14 +1,14 @@
-import React, { useState } from "react";
-import { CCardGroup, CCol, CContainer, CRow } from "@coreui/react";
-import { AuthRequest } from "../../../common/appTypes";
-import { FieldProperties } from "../../../common/types";
-import { FieldType, ValidationType } from "../../../common/enums";
+import React, {useState} from "react";
+import {CCardGroup, CCol, CContainer, CRow} from "@coreui/react";
+import {AuthRequest} from "../../../common/appTypes";
+import {FieldProperties} from "../../../common/types";
+import {FieldType, ValidationType} from "../../../common/enums";
 import Form from "../../../components/generic/Form";
-import { login } from "../../../services/Api";
+import {login} from "../../../services/Api";
 import withReactContent from "sweetalert2-react-content";
-import Swal, { SweetAlertIcon } from "sweetalert2";
+import Swal, {SweetAlertIcon} from "sweetalert2";
 import Spinner from "../../../components/Spinner";
-import { useNavigate } from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 
 interface LoginError {
   username?: string;
@@ -39,7 +39,7 @@ const Login = () => {
       selector: (data) => data?.password,
       onChange: (e) => (authRequest.password = e.target.value),
       validators: [
-        { validationType: ValidationType.required, feedback: "Veuillez saisir un mot de passe" }
+        {validationType: ValidationType.required, feedback: "Veuillez saisir un mot de passe"}
       ]
     }
   ];
@@ -48,8 +48,8 @@ const Login = () => {
     const loading = {
       title: "Connexion en cours...",
       html: (
-        <div style={{ overflow: "hidden" }}>
-          <Spinner />
+        <div style={{overflow: "hidden"}}>
+          <Spinner/>
         </div>
       ),
       allowOutsideClick: false,
@@ -65,7 +65,7 @@ const Login = () => {
         sessionStorage.setItem("userId", response.userId);
         sessionStorage.setItem("username", response.username);
         sessionStorage.setItem("role", JSON.stringify(response.role))
-        const home = response.role.id === 1 ? "/dashboard" : "/loans/list";
+        const home: string = response.role.id === 1 ? "/dashboard" : "/loans/list";
         const swalData = {
           icon: "success" as SweetAlertIcon,
           title: "Connexion réussie",
