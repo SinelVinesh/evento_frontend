@@ -6,16 +6,15 @@ import withReactContent from "sweetalert2-react-content";
 import Swal, {SweetAlertIcon} from "sweetalert2";
 import Spinner from "../../../components/Spinner";
 import {useNavigate} from "react-router-dom";
-import {createRatedExpense, findAllRatedExpenseType} from "services/Api";
-import {RatedExpense, RatedExpenseType} from "../../../common/appTypes";
-import {InputAdornment} from "@mui/material";
+import {createVariableExpense, findAllRatedExpenseType} from "services/Api";
+import {RatedExpenseType, VariableExpense} from "../../../common/appTypes";
 
 const ConfiguredForm: React.FC = () => {
-  const [data] = useState({} as RatedExpense);
+  const [data] = useState({} as VariableExpense);
   const [ratedExpenseTypesList, setRatedExpenseTypesList] = useState([] as RatedExpenseType[]);
   const navigate = useNavigate();
-  const apiCall = createRatedExpense;
-  const redirectUrl = "/rated-expenses/list";
+  const apiCall = createVariableExpense;
+  const redirectUrl = "/variable-expenses/list";
   const properties: FieldProperties[] = [
     {
       label: "Nom",
@@ -26,34 +25,7 @@ const ConfiguredForm: React.FC = () => {
       validators: [
         {validationType: ValidationType.required, feedback: "Veuillez saisir un nom"}
       ]
-    }, {
-      label: "Catégorie",
-      name: "ratedExpenseType",
-      type: FieldType.select,
-      options: ratedExpenseTypesList.map((ratedExpenseType) => ({
-        value: ratedExpenseType.id!,
-        label: `${ratedExpenseType.name!} (${ratedExpenseType.rateType!.name!})`
-      })),
-      selector: (data) => data?.ratedExpenseType?.id,
-      onChange: (e) => (data.ratedExpenseType = {id: e.target.value}),
-      validators: [
-        {validationType: ValidationType.required, feedback: "Veuillez choisir une catégorie"}
-      ]
-    },
-    {
-      label: "Prix de location",
-      name: "rentPrice",
-      type: FieldType.number,
-      selector: (data) => data?.rentPrice,
-      onChange: (e) => (data.rentPrice = e.target.value),
-      validators: [
-        {validationType: ValidationType.required, feedback: "Veuillez saisir un prix de location"},
-        {validationType: ValidationType.min, args: {value: 0}, feedback: "Le prix doit être positif"}
-      ],
-      inputProps: {
-        startAdornment: <InputAdornment position="start">Ar</InputAdornment>
-      }
-    },
+    }
   ];
   const submit = () => {
     const swal = withReactContent(Swal);
@@ -74,7 +46,7 @@ const ConfiguredForm: React.FC = () => {
       .then((response) => {
         const swalData = {
           icon: "success" as SweetAlertIcon,
-          title: "La dépense tarifée a été ajouté avec succès",
+          title: "La dépense variable a été ajouté avec succès",
           timer: 1000,
           showConfirmButton: false
         };
@@ -101,7 +73,7 @@ const ConfiguredForm: React.FC = () => {
   }, [])
   return (
     <Form
-      title={"Ajouter une dépense tarifée"}
+      title={"Ajouter une dépense variable"}
       data={data}
       properties={properties}
       submitFn={submit}

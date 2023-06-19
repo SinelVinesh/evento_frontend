@@ -1,7 +1,15 @@
 // @ts-ignore
 
 import axios from "axios";
-import {AuthRequest, Material, MaterialFilter, Paginated} from "../common/appTypes";
+import {
+  AuthRequest,
+  Location,
+  Material,
+  MaterialFilter,
+  Paginated,
+  RatedExpense,
+  RatedExpenseType
+} from "../common/appTypes";
 
 /* api calls */
 // Generic
@@ -113,20 +121,22 @@ export const findAllLocation = (filter?: Paginated) => {
   return getCall(url, true)
 }
 
-export const createLocation = (data?: Material) => {
+export const createLocation = (data?: Location) => {
   return postCall(locationUrl, data, true)
 }
 
 
 // Rated expense type
 const ratedExpenseTypeUrl = `${base}/rated-expense-types`
-
 export const findAllRatedExpenseType = (filter?: Paginated) => {
   const filters = [
     {field: 'page', name: 'page'}
   ]
   let url = buildUrlWithFilter(ratedExpenseTypeUrl, filter, filters)
   return getCall(url, true)
+}
+export const createRatedExpenseType = (data?: RatedExpenseType) => {
+  return postCall(ratedExpenseTypeUrl, data, true)
 }
 
 // Rate type
@@ -147,4 +157,23 @@ export const findAllRatedExpense = (filter?: Paginated) => {
   ]
   let url = buildUrlWithFilter(ratedExpenseUrl, filter, filters)
   return getCall(url, true)
+}
+
+export const createRatedExpense = (data?: RatedExpense) => {
+  return postCall(ratedExpenseUrl, data, true)
+}
+
+// Variable expense
+const variableExpenseUrl = `${base}/expense-types`
+
+export const findAllVariableExpense = (filter?: Paginated) => {
+  const filters = [
+    {field: 'page', name: 'page'}
+  ]
+  let url = buildUrlWithFilter(variableExpenseUrl, filter, filters)
+  return getCall(url, true)
+}
+
+export const createVariableExpense = (data?: RatedExpense) => {
+  return postCall(variableExpenseUrl, data, true)
 }

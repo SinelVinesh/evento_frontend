@@ -56,3 +56,6 @@ export interface RatedExpense extends HasName {
   ratedExpenseType?: RatedExpenseType
   rentPrice?: number
 }
+
+export interface VariableExpense extends HasName {
+}
