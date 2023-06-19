@@ -25,6 +25,14 @@ const RatedExpenseAddForm = React.lazy(() => import('./views/app/ratedExpense/Ad
 const VariableExpenseList = React.lazy(() => import('./views/app/variableExpense/List'))
 const VariableExpenseAddForm = React.lazy(() => import('./views/app/variableExpense/AddForm'))
 
+// Type d'événement
+const EventTypeList = React.lazy(() => import('./views/app/eventType/List'))
+const EventTypeAddForm = React.lazy(() => import('./views/app/eventType/AddForm'))
+
+// Evenements
+const EventList = React.lazy(() => import('./views/app/event/List'))
+const EventAddForm = React.lazy(() => import('./views/app/event/AddForm'))
+
 const routes = [
   {path: '/monthly-profit/list', element: Login},
   {path: '/materials/list', element: MaterialList},
@@ -39,6 +47,10 @@ const routes = [
   {path: '/rated-expenses/create', element: RatedExpenseAddForm},
   {path: '/variable-expenses/list', element: VariableExpenseList},
   {path: '/variable-expenses/create', element: VariableExpenseAddForm},
+  {path: '/event-types/list', element: EventTypeList},
+  {path: '/event-types/create', element: EventTypeAddForm},
+  {path: '/events/list', element: EventList},
+  {path: '/events/create', element: EventAddForm},
 ]
 
 export default routes

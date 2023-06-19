@@ -3,6 +3,8 @@
 import axios from "axios";
 import {
   AuthRequest,
+  Event,
+  EventType,
   Location,
   Material,
   MaterialFilter,
@@ -176,4 +178,35 @@ export const findAllVariableExpense = (filter?: Paginated) => {
 
 export const createVariableExpense = (data?: RatedExpense) => {
   return postCall(variableExpenseUrl, data, true)
+}
+
+// Event type
+const eventTypeUrl = `${base}/event-types`
+export const findAllEventType = (filter?: Paginated) => {
+  const filters = [
+    {field: 'page', name: 'page'}
+  ]
+  let url = buildUrlWithFilter(eventTypeUrl, filter, filters)
+  return getCall(url, true)
+}
+
+export const createEventType = (data?: EventType) => {
+  return postCall(eventTypeUrl, data, true)
+}
+
+// Event estimation
+const eventEstimationUrl = `${base}/event-estimations`
+
+export const findAllEventEstimation = (filter?: Paginated) => {
+  const filters = [
+    {field: 'page', name: 'page'}
+  ]
+  let url = buildUrlWithFilter(eventEstimationUrl, filter, filters)
+  return getCall(url, true)
+}
+
+// Event
+const eventUrl = `${base}/events`
+export const createEvent = (data?: Event) => {
+  return postCall(eventUrl, data, true)
 }

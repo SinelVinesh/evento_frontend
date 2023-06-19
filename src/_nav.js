@@ -108,6 +108,46 @@ const _nav_admin = [
       }
     ],
   },
+  {
+    component: CNavTitle,
+    name: 'Evenements'
+  },
+  {
+    component: CNavGroup,
+    name: 'Types d\'évènement',
+    to: '/event-types',
+    icon: <CIcon icon={cilChevronDoubleRight} customClassName="nav-icon"/>,
+    items: [
+      {
+        component: CNavItem,
+        name: 'Liste',
+        to: '/event-types/list',
+      },
+      {
+        component: CNavItem,
+        name: "Formulaire d'ajout",
+        to: '/event-types/create',
+      }
+    ],
+  },
+  {
+    component: CNavGroup,
+    name: 'Evènement',
+    to: '/events',
+    icon: <CIcon icon={cilChevronDoubleRight} customClassName="nav-icon"/>,
+    items: [
+      {
+        component: CNavItem,
+        name: 'Liste',
+        to: '/events/list',
+      },
+      {
+        component: CNavItem,
+        name: "Formulaire d'ajout",
+        to: '/events/create',
+      }
+    ],
+  },
 ]
 
 

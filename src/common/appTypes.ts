@@ -59,3 +59,38 @@ export interface RatedExpense extends HasName {
 
 export interface VariableExpense extends HasName {
 }
+
+export interface EventType extends HasName {
+}
+
+export interface EventStatus extends HasName {
+}
+
+export interface Event extends HasName {
+  location?: Location
+  eventType?: EventType
+  eventStatus?: EventStatus
+  locationPrice?: number
+  startDate?: number
+  endDate?: number
+  deleted?: boolean
+  ratedExpenses?: EventRatedExpense[]
+  variableExpenses?: EventVariableExpense[]
+}
+
+export interface EventEstimation {
+  event?: Event
+  totalExpense?: number
+}
+
+export interface EventRatedExpense extends HasId {
+  event?: Event
+  ratedExpense?: RatedExpense
+  duration?: number
+}
+
+export interface EventVariableExpense extends HasId {
+  event?: Event
+  variableExpense?: VariableExpense
+  amount?: number
+}
