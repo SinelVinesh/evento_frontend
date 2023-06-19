@@ -216,5 +216,6 @@ export const getEvent = (id: number) => {
 }
 
 export const updateEvent = (data?: Event) => {
-  return putCall(eventUrl, data, true)
+  const url = `${eventUrl}/${data?.id}`
+  return putCall(url, data, true)
 }
