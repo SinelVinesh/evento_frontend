@@ -116,3 +116,35 @@ export const findAllLocation = (filter?: Paginated) => {
 export const createLocation = (data?: Material) => {
   return postCall(locationUrl, data, true)
 }
+
+
+// Rated expense type
+const ratedExpenseTypeUrl = `${base}/rated-expense-types`
+
+export const findAllRatedExpenseType = (filter?: Paginated) => {
+  const filters = [
+    {field: 'page', name: 'page'}
+  ]
+  let url = buildUrlWithFilter(ratedExpenseTypeUrl, filter, filters)
+  return getCall(url, true)
+}
+
+// Rate type
+const rateTypeUrl = `${base}/rate-types`
+export const findAllRateType = (filter?: Paginated) => {
+  const filters = [
+    {field: 'page', name: 'page'}
+  ]
+  let url = buildUrlWithFilter(rateTypeUrl, filter, filters)
+  return getCall(url, true)
+}
+
+// Rated expense
+const ratedExpenseUrl = `${base}/rated-expenses`
+export const findAllRatedExpense = (filter?: Paginated) => {
+  const filters = [
+    {field: 'page', name: 'page'}
+  ]
+  let url = buildUrlWithFilter(ratedExpenseUrl, filter, filters)
+  return getCall(url, true)
+}

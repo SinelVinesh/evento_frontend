@@ -44,3 +44,15 @@ export interface Location extends HasName {
   maxCapacity?: number
   locationType?: LocationType
 }
+
+export interface RatedExpenseType extends HasName {
+  rateType?: RateType
+}
+
+export interface RateType extends HasName {
+}
+
+export interface RatedExpense extends HasName {
+  ratedExpenseType?: RatedExpenseType
+  rentPrice?: number
+}

@@ -62,6 +62,42 @@ const _nav_admin = [
     ],
   },
   {
+    component: CNavGroup,
+    name: 'Types de dépense tarifée',
+    to: '/rated-expense-types',
+    icon: <CIcon icon={cilChevronDoubleRight} customClassName="nav-icon"/>,
+    items: [
+      {
+        component: CNavItem,
+        name: 'Liste',
+        to: '/rated-expense-types/list',
+      },
+      {
+        component: CNavItem,
+        name: "Formulaire d'ajout",
+        to: '/rated-expense-types/create',
+      }
+    ],
+  },
+  {
+    component: CNavGroup,
+    name: 'Dépenses tarifées',
+    to: '/rated-expenses',
+    icon: <CIcon icon={cilChevronDoubleRight} customClassName="nav-icon"/>,
+    items: [
+      {
+        component: CNavItem,
+        name: 'Liste',
+        to: '/rated-expenses/list',
+      },
+      {
+        component: CNavItem,
+        name: "Formulaire d'ajout",
+        to: '/rated-expenses/create',
+      }
+    ],
+  },
+  {
     component: CNavItem,
     name: 'Tableau de bord',
     to: '/dashboard',

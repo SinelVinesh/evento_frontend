@@ -13,6 +13,14 @@ const LocationTypeAddForm = React.lazy(() => import('./views/app/locationType/Ad
 const LocationList = React.lazy(() => import('./views/app/location/List'))
 const LocationAddForm = React.lazy(() => import('./views/app/location/AddForm'))
 
+// Type de dépense tarifée
+const RatedExpenseTypeList = React.lazy(() => import('./views/app/ratedExpenseType/List'))
+const RatedExpenseTypeAddForm = React.lazy(() => import('./views/app/ratedExpenseType/AddForm'))
+
+// Dépense tarifée
+const RatedExpenseList = React.lazy(() => import('./views/app/ratedExpense/List'))
+const RatedExpenseAddForm = React.lazy(() => import('./views/app/ratedExpense/AddForm'))
+
 const routes = [
   {path: '/monthly-profit/list', element: Login},
   {path: '/materials/list', element: MaterialList},
@@ -21,6 +29,10 @@ const routes = [
   {path: '/location-types/create', element: LocationTypeAddForm},
   {path: '/locations/list', element: LocationList},
   {path: '/locations/create', element: LocationAddForm},
+  {path: '/rated-expense-types/list', element: RatedExpenseTypeList},
+  {path: '/rated-expense-types/create', element: RatedExpenseTypeAddForm},
+  {path: '/rated-expenses/list', element: RatedExpenseList},
+  {path: '/rated-expenses/create', element: RatedExpenseAddForm},
 ]
 
 export default routes
