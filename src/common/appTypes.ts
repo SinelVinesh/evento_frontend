@@ -33,3 +33,6 @@ export interface UserFilter extends Paginated {
 export interface Material extends HasName {
   rentPrice?: number
 }
+
+export interface MaterialFilter extends Paginated {
+}
