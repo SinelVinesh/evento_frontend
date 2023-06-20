@@ -6,7 +6,7 @@ import withReactContent from "sweetalert2-react-content";
 import Swal, {SweetAlertIcon} from "sweetalert2";
 import Spinner from "../../../components/Spinner";
 import {useNavigate} from "react-router-dom";
-import {createRatedExpense, findAllRatedExpenseType} from "services/Api";
+import {createRatedExpense, findAllRatedExpenseType, uploadFile} from "services/Api";
 import {RatedExpense, RatedExpenseType} from "../../../common/appTypes";
 import {InputAdornment} from "@mui/material";
 
@@ -41,7 +41,7 @@ const ConfiguredForm: React.FC = () => {
       ]
     },
     {
-      label: "Prix de location",
+      label: "Tarif",
       name: "rentPrice",
       type: FieldType.number,
       selector: (data) => data?.rentPrice,
@@ -54,6 +54,15 @@ const ConfiguredForm: React.FC = () => {
         startAdornment: <InputAdornment position="start">Ar</InputAdornment>
       }
     },
+    {
+      label: "Image",
+      name: "file",
+      type: FieldType.file,
+      selector: (data) => data?.image?.name,
+      onChange: (e) => {
+        data.image = e.target.files[0];
+      },
+    }
   ];
   const submit = () => {
     const swal = withReactContent(Swal);
@@ -70,29 +79,42 @@ const ConfiguredForm: React.FC = () => {
       showConfirmButton: false
     };
     swal.fire(loading);
-    apiCall(data)
-      .then((response) => {
-        const swalData = {
-          icon: "success" as SweetAlertIcon,
-          title: "La dépense tarifée a été ajouté avec succès",
-          timer: 1000,
-          showConfirmButton: false
-        };
-        swal.close();
-        swal.fire(swalData).then(() => {
-          navigate(redirectUrl);
+    const formData = new FormData();
+    formData.append("file", data.image, data.image?.name);
+    uploadFile(formData).then((response) => {
+      data.imageLink = response.data
+      apiCall(data)
+        .then((response) => {
+          const swalData = {
+            icon: "success" as SweetAlertIcon,
+            title: "La dépense tarifée a été ajouté avec succès",
+            timer: 1000,
+            showConfirmButton: false
+          };
+          swal.close();
+          swal.fire(swalData).then(() => {
+            navigate(redirectUrl);
+          });
+          console.log(response);
+        })
+        .catch((error) => {
+          const swalData = {
+            icon: "error" as SweetAlertIcon,
+            title: "Une erreur est survenue lors de l'enregistrement",
+            text: error.response.data.message
+          };
+          swal.fire(swalData);
+          console.log(error);
         });
-        console.log(response);
-      })
-      .catch((error) => {
-        const swalData = {
-          icon: "error" as SweetAlertIcon,
-          title: "Une erreur est survenue lors de l'enregistrement",
-          text: error.response.data.message
-        };
-        swal.fire(swalData);
-        console.log(error);
-      });
+    }).catch((error) => {
+      const swalData = {
+        icon: "error" as SweetAlertIcon,
+        title: "Une erreur est survenue lors de l'enregistrement",
+        text: error.response.data.message
+      };
+      swal.fire(swalData);
+      console.log(error);
+    })
   };
   useEffect(() => {
     findAllRatedExpenseType().then((response) => {

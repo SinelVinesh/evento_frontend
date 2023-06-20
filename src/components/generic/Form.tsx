@@ -47,6 +47,7 @@ const Form: React.FC<FormProps> = ({
     FieldType.datetime,
     FieldType.month,
     FieldType.week,
+    FieldType.file,
   ]
   let columns: any[] = []
   if (isMultiple) {

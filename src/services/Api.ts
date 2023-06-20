@@ -127,6 +127,12 @@ export const createLocation = (data?: Location) => {
   return postCall(locationUrl, data, true)
 }
 
+// File upload
+const fileUploadUrl = `${base}/file-upload`
+export const uploadFile = (data: FormData) => {
+  return postCall(fileUploadUrl, data, true)
+}
+
 
 // Rated expense type
 const ratedExpenseTypeUrl = `${base}/rated-expense-types`

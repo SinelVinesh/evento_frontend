@@ -15,6 +15,7 @@ export enum FieldType {
   numberInterval = 'number-interval',
   multiple = 'multiple',
   hidden = 'hidden',
+  file = 'file'
 }
 
 export enum ValidationType {

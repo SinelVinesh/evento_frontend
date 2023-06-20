@@ -12,6 +12,7 @@ import {
   EventType,
   EventVariableExpense,
   Location,
+  LocationSeatCategory,
   RatedExpense,
   VariableExpense
 } from "../../../common/appTypes";
@@ -24,7 +25,7 @@ import {
   updateEvent
 } from "../../../services/Api";
 import {InputAdornment} from "@mui/material";
-import {CButton} from "@coreui/react";
+import {CButton, CCol, CRow} from "@coreui/react";
 import {Delete} from "@mui/icons-material";
 import {formatNumber} from "../../../services/Format";
 import {format} from "date-fns";
@@ -45,6 +46,9 @@ const ConfiguredForm: React.FC = () => {
   const [eventVariableExpenses, setEventVariableExpenses] = useState<EventVariableExpense[]>([]);
   const [variableFakeId, setVariableFakeId] = useState(0);
   const [selectedEventVariableExpenses, setSelectedEventVariableExpenses] = useState<EventVariableExpense[]>([]);
+
+  const [seatCategoryPrices, setSeatCategoryPrices] = useState([] as any[])
+  const [locationSeatCategories, setLocationSeatCategories] = useState([] as LocationSeatCategory[])
 
   const params = useParams();
   const id = Number.parseInt(params.id as string);
@@ -299,10 +303,73 @@ const ConfiguredForm: React.FC = () => {
       },
 
     },
+    {
+      label: "Prix place normal",
+      name: "normalprice",
+      type: FieldType.number,
+      selector: (data) => seatCategoryPrices?.find((price: any) => price?.seatCategory?.id === 1)?.price,
+      onChange: (e) => {
+        const prices = [...seatCategoryPrices]
+        const eventSeatCategory = prices?.find((price: any) => price?.seatCategory?.id === 1)
+        if (eventSeatCategory) {
+          eventSeatCategory.price = e.target.value
+        } else {
+          prices.push({seatCategory: {id: 1}, price: e.target.value})
+        }
+        setSeatCategoryPrices(prices)
+      },
+      validators: [
+        {validationType: ValidationType.required, feedback: "Veuillez saisir un prix pour les places normales"},
+      ],
+    },
+    {
+      label: "Prix place reservé",
+      name: "reservationprice",
+      type: FieldType.number,
+      selector: (data) => seatCategoryPrices?.find((price: any) => price?.seatCategory?.id === 2)?.price,
+      onChange: (e) => {
+        const prices = [...seatCategoryPrices]
+        const eventSeatCategory = prices?.find((price: any) => price?.seatCategory.id === 2)
+        if (eventSeatCategory) {
+          eventSeatCategory.price = e.target.value
+        } else {
+          prices.push({seatCategory: {id: 2}, price: e.target.value})
+        }
+        setSeatCategoryPrices(prices)
+      },
+      validators: [
+        {validationType: ValidationType.required, feedback: "Veuillez saisir un prix pour les places reservées"},
+      ],
+    },
+    {
+      label: "Prix place VIP",
+      name: "vipprice",
+      type: FieldType.number,
+      selector: (data) => seatCategoryPrices?.find((price: any) => price?.seatCategory?.id === 3)?.price,
+      onChange: (e) => {
+        const prices = [...seatCategoryPrices]
+        const eventSeatCategory = prices?.find((price: any) => price?.seatCategory?.id === 3)
+        if (eventSeatCategory) {
+          eventSeatCategory.price = e.target.value
+        } else {
+          prices.push({seatCategory: {id: 3}, price: e.target.value})
+        }
+        setSeatCategoryPrices(prices)
+      },
+      validators: [
+        {validationType: ValidationType.required, feedback: "Veuillez saisir un prix pour les places VIP"},
+      ],
+    },
   ];
   const submit = () => {
     data.ratedExpenses = eventRatedExpenses;
     data.variableExpenses = eventVariableExpenses;
+    data.eventSeatCategories = []
+    for (const price of seatCategoryPrices) {
+      const locationSeatCategory = locationSeatCategories?.find((category: LocationSeatCategory) => category?.seatCategory?.id == price.seatCategory.id)
+      const eventSeatCategory = {locationSeatCategory: locationSeatCategory, price: price.price}
+      data.eventSeatCategories.push(eventSeatCategory)
+    }
     console.log(data);
     const swal = withReactContent(Swal);
     const loading = {
@@ -369,6 +436,16 @@ const ConfiguredForm: React.FC = () => {
         expense.id = variableTempFake;
         variableTempFake++;
       }
+      const locationSeatCategories = initialData.location.locationSeatCategories
+      const seatCategoryPrices = []
+      for (const eventSeatCategory of initialData.eventSeatCategories) {
+        seatCategoryPrices.push({
+          seatCategory: eventSeatCategory.locationSeatCategory.seatCategory,
+          price: eventSeatCategory.price
+        })
+      }
+      setLocationSeatCategories(locationSeatCategories)
+      setSeatCategoryPrices(seatCategoryPrices)
       setRatedFakeId(ratedTempFake);
       setVariableFakeId(variableTempFake);
       setEventRatedExpenses(initialData.ratedExpenses);
@@ -387,11 +464,28 @@ const ConfiguredForm: React.FC = () => {
           submitText={"Enregistrer"}
           initialSubmitAllowed={true}
           formBottom={<>
-            <b>Estimation du devis :</b> {
-            formatNumber(
-              eventRatedExpenses.reduce((acc, cur) => acc + Number.parseInt(String(cur?.duration! * cur?.ratedExpense?.rentPrice! * cur?.quantity)), 0)
-              + eventVariableExpenses.reduce((acc, cur) => acc + Number.parseInt(String(cur?.amount === undefined ? 0 : cur?.amount)) * cur?.quantity, 0)
-              + (data.locationPrice === undefined ? 0 : Number.parseInt(String(data.locationPrice))))} Ar
+            <CRow>
+              <CCol>
+                <b>Estimation du devis :</b> {
+
+                formatNumber(
+                  eventRatedExpenses.reduce((acc, cur) => acc + Number.parseInt(String(cur?.duration! * cur?.ratedExpense?.rentPrice!)), 0)
+                  + eventVariableExpenses.reduce((acc, cur) => acc + Number.parseInt(String(cur?.amount === undefined ? 0 : cur?.amount)), 0)
+                  + (data.locationPrice === undefined ? 0 : Number.parseInt(String(data.locationPrice))))} Ar
+              </CCol>
+            </CRow>
+            <CRow>
+              <CCol>
+                <b>Estimation de la recette : </b>
+                {
+                  formatNumber(
+                    seatCategoryPrices.reduce((acc, cur) => acc + (locationSeatCategories?.find((category: LocationSeatCategory) => category?.seatCategory?.id == cur.seatCategory.id)?.capacity ?? 0) * cur.price, 0)
+                  )
+                }
+                Ar
+
+              </CCol>
+            </CRow>
           </>}
         />
       )}

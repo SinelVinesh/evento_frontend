@@ -33,7 +33,7 @@ const ConfiguredList: React.FC = () => {
     },
     {
       name: "Nombre de places",
-      selector: (row: Location) => row.maxCapacity,
+      selector: (row: Location) => row.locationSeatCategories?.reduce((acc, locationSeatCategory) => acc + locationSeatCategory.capacity!, 0),
       sortable: true
     },
     {

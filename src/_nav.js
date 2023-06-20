@@ -130,6 +130,10 @@ const _nav_admin = [
       }
     ],
   },
+]
+
+
+const _nav_user = [
   {
     component: CNavGroup,
     name: 'Evènement',
@@ -149,9 +153,6 @@ const _nav_admin = [
     ],
   },
 ]
-
-
-const _nav_user = []
 
 const _nav = role.id === 1 ? _nav_admin : _nav_user;
 export default _nav

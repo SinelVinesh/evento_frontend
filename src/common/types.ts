@@ -1,6 +1,5 @@
-import { FieldType, SheetSectionType, ValidationType } from "./enums";
-import { ChangeEvent, ReactNode } from "react";
-import { SelectChangeEvent } from "@mui/material";
+import {FieldType, SheetSectionType, ValidationType} from "./enums";
+import {ReactNode} from "react";
 
 export interface FieldProperties {
   label?: string
@@ -8,7 +7,7 @@ export interface FieldProperties {
   type: FieldType
   selector: (data: any) => any
   onChange: (
-    e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement> | SelectChangeEvent<any>,
+    e: any,
     subName?: string,
   ) => void
   options?: SelectOption[]
@@ -42,6 +41,7 @@ export interface SelectOption {
   label: string
   value: any
 }
+
 export interface Validator {
   validationType: ValidationType
   args?: any

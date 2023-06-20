@@ -41,8 +41,19 @@ export interface LocationType extends HasName {
 }
 
 export interface Location extends HasName {
-  maxCapacity?: number
   locationType?: LocationType
+  image?: any
+  imageLink?: string
+  locationSeatCategories?: LocationSeatCategory[]
+}
+
+export interface SeatCategory extends HasName {
+}
+
+export interface LocationSeatCategory extends HasId {
+  location?: Location
+  seatCategory?: SeatCategory
+  capacity?: number
 }
 
 export interface RatedExpenseType extends HasName {
@@ -55,6 +66,8 @@ export interface RateType extends HasName {
 export interface RatedExpense extends HasName {
   ratedExpenseType?: RatedExpenseType
   rentPrice?: number
+  image?: any
+  imageLink?: string
 }
 
 export interface VariableExpense extends HasName {
@@ -76,6 +89,7 @@ export interface Event extends HasName {
   deleted?: boolean
   ratedExpenses?: EventRatedExpense[]
   variableExpenses?: EventVariableExpense[]
+  eventSeatCategories?: EventSeatCategory[]
 }
 
 export interface EventEstimation {
@@ -95,4 +109,9 @@ export interface EventVariableExpense extends HasId {
   variableExpense?: VariableExpense
   amount?: number
   quantity: number
+}
+
+export interface EventSeatCategory extends HasId {
+  price?: number
+  locationSeatCategory?: LocationSeatCategory
 }
