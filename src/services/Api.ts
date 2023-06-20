@@ -245,6 +245,15 @@ export const createVariableExpense = (data?: RatedExpense) => {
   return postCall(variableExpenseUrl, data, true)
 }
 
+export const updateVariableExpense = (data?: RatedExpense) => {
+  const url = `${variableExpenseUrl}/${data?.id}`
+  return putCall(url, data, true)
+}
+
+export const getVariableExpense = (id: string) => {
+  return getCall(`${variableExpenseUrl}/${id}`, true)
+}
+
 // Event type
 const eventTypeUrl = `${base}/event-types`
 export const findAllEventType = (filter?: Paginated) => {
@@ -257,6 +266,13 @@ export const findAllEventType = (filter?: Paginated) => {
 
 export const createEventType = (data?: EventType) => {
   return postCall(eventTypeUrl, data, true)
+}
+export const updateEventType = (data?: EventType) => {
+  const url = `${eventTypeUrl}/${data?.id}`
+  return putCall(url, data, true)
+}
+export const getEventType = (id: string) => {
+  return getCall(`${eventTypeUrl}/${id}`, true)
 }
 
 // Event estimation

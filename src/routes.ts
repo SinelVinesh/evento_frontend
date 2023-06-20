@@ -28,14 +28,17 @@ const RatedExpenseTypeUpdateForm = React.lazy(() => import('./views/app/ratedExp
 // Dépense tarifée
 const RatedExpenseList = React.lazy(() => import('./views/app/ratedExpense/List'))
 const RatedExpenseAddForm = React.lazy(() => import('./views/app/ratedExpense/AddForm'))
+const RatedExpenseUpdateForm = React.lazy(() => import('./views/app/ratedExpense/UpdateForm'))
 
 // Dépense variable
 const VariableExpenseList = React.lazy(() => import('./views/app/variableExpense/List'))
 const VariableExpenseAddForm = React.lazy(() => import('./views/app/variableExpense/AddForm'))
+const VariableExpenseUpdateForm = React.lazy(() => import('./views/app/variableExpense/UpdateForm'))
 
 // Type d'événement
 const EventTypeList = React.lazy(() => import('./views/app/eventType/List'))
 const EventTypeAddForm = React.lazy(() => import('./views/app/eventType/AddForm'))
+const EventTypeUpdateForm = React.lazy(() => import('./views/app/eventType/UpdateForm'))
 
 // Evenements
 const EventList = React.lazy(() => import('./views/app/event/List'))
@@ -62,10 +65,13 @@ const routes = [
   {path: '/rated-expense-types/:id/update', element: RatedExpenseTypeUpdateForm},
   {path: '/rated-expenses/list', element: RatedExpenseList},
   {path: '/rated-expenses/create', element: RatedExpenseAddForm},
+  {path: '/rated-expenses/:id/update', element: RatedExpenseUpdateForm},
   {path: '/variable-expenses/list', element: VariableExpenseList},
   {path: '/variable-expenses/create', element: VariableExpenseAddForm},
+  {path: '/variable-expenses/:id/update', element: VariableExpenseUpdateForm},
   {path: '/event-types/list', element: EventTypeList},
   {path: '/event-types/create', element: EventTypeAddForm},
+  {path: '/event-types/:id/update', element: EventTypeUpdateForm},
   {path: '/events/list', element: EventList},
   {path: '/events/create', element: EventAddForm},
   {path: '/events/:id/update', element: EventUpdateForm},
