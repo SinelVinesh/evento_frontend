@@ -87,10 +87,12 @@ export interface EventRatedExpense extends HasId {
   event?: Event
   ratedExpense?: RatedExpense
   duration?: number
+  quantity: number
 }
 
 export interface EventVariableExpense extends HasId {
   event?: Event
   variableExpense?: VariableExpense
   amount?: number
+  quantity: number
 }

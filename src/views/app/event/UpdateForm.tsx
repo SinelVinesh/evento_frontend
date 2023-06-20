@@ -164,7 +164,7 @@ const ConfiguredForm: React.FC = () => {
           <h4>Dépenses tarifées</h4>
           <div>
             <b>Total dépenses tarifées
-              :</b> {formatNumber(eventRatedExpenses.reduce((acc, cur) => acc + cur?.duration! * cur.ratedExpense?.rentPrice!, 0))} Ar
+              :</b> {formatNumber(eventRatedExpenses.reduce((acc, cur) => acc + cur?.duration! * cur.ratedExpense?.rentPrice! * cur.quantity!, 0))} Ar
           </div>
         </>,
         multipleEntriesOption: {
@@ -209,6 +209,13 @@ const ConfiguredForm: React.FC = () => {
             onChange: (e: any) => (eventRatedExpense.duration = e.target.value),
           },
           {
+            label: "Quantité",
+            name: "quantity",
+            type: FieldType.number,
+            selector: (data: any) => data?.quantity,
+            onChange: (e: any) => (eventRatedExpense.quantity = e.target.value),
+          },
+          {
             label: "Prix unitaire (Ar)",
             name: "unitPrice",
             type: FieldType.hidden,
@@ -218,7 +225,7 @@ const ConfiguredForm: React.FC = () => {
             label: "Prix total (Ar)",
             name: "totalPrice",
             type: FieldType.hidden,
-            selector: (data: any) => formatNumber(data?.ratedExpense?.rentPrice * data?.duration),
+            selector: (data: any) => formatNumber(data?.ratedExpense?.rentPrice * data?.duration * data?.quantity),
           }
         ]
       },
@@ -236,7 +243,7 @@ const ConfiguredForm: React.FC = () => {
           <h4>Autres Dépenses</h4>
           <div>
             <b>Total des autres dépenses
-              :</b> {formatNumber(eventVariableExpenses.reduce((acc, cur) => acc + Number.parseInt(String(cur?.amount!)), 0))} Ar
+              :</b> {formatNumber(eventVariableExpenses.reduce((acc, cur) => acc + Number.parseInt(String(cur?.amount!)) * cur?.quantity, 0))} Ar
           </div>
         </>,
         multipleEntriesOption: {
@@ -272,10 +279,17 @@ const ConfiguredForm: React.FC = () => {
             })
           },
           {
+            label: "Quantité",
+            name: "quantity",
+            type: FieldType.number,
+            selector: (data: any) => data?.quantity,
+            onChange: (e: any) => (eventVariableExpense.quantity = e.target.value),
+          },
+          {
             label: "Prix (Ar)",
             name: "amount",
             type: FieldType.number,
-            selector: (data: any) => data?.amount,
+            selector: (data: any) => data?.amount * data?.quantity,
             onChange: (e: any) => (eventVariableExpense.amount = e.target.value),
             inputProps: {
               startAdornment: <InputAdornment position="start">Ar</InputAdornment>
@@ -345,14 +359,18 @@ const ConfiguredForm: React.FC = () => {
       let initialData = response.data;
       initialData.startDate = new Date(initialData.startDate).getTime();
       initialData.endDate = new Date(initialData.endDate).getTime();
+      let ratedTempFake = ratedFakeId;
       for (const expense of initialData.ratedExpenses) {
-        expense.id = ratedFakeId;
-        setRatedFakeId(ratedFakeId + 1)
+        expense.id = ratedTempFake;
+        ratedTempFake++;
       }
+      let variableTempFake = variableFakeId;
       for (const expense of initialData.variableExpenses) {
-        expense.id = variableFakeId;
-        setVariableFakeId(variableFakeId + 1)
+        expense.id = variableTempFake;
+        variableTempFake++;
       }
+      setRatedFakeId(ratedTempFake);
+      setVariableFakeId(variableTempFake);
       setEventRatedExpenses(initialData.ratedExpenses);
       setEventVariableExpenses(initialData.variableExpenses);
       setData(initialData);
@@ -367,11 +385,12 @@ const ConfiguredForm: React.FC = () => {
           properties={properties}
           submitFn={submit}
           submitText={"Enregistrer"}
+          initialSubmitAllowed={true}
           formBottom={<>
             <b>Estimation du devis :</b> {
             formatNumber(
-              eventRatedExpenses.reduce((acc, cur) => acc + Number.parseInt(String(cur?.duration! * cur?.ratedExpense?.rentPrice!)), 0)
-              + eventVariableExpenses.reduce((acc, cur) => acc + Number.parseInt(String(cur?.amount === undefined ? 0 : cur?.amount)), 0)
+              eventRatedExpenses.reduce((acc, cur) => acc + Number.parseInt(String(cur?.duration! * cur?.ratedExpense?.rentPrice! * cur?.quantity)), 0)
+              + eventVariableExpenses.reduce((acc, cur) => acc + Number.parseInt(String(cur?.amount === undefined ? 0 : cur?.amount)) * cur?.quantity, 0)
               + (data.locationPrice === undefined ? 0 : Number.parseInt(String(data.locationPrice))))} Ar
           </>}
         />
