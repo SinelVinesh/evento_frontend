@@ -9,6 +9,9 @@ export const formatDateTime = (date: number) => {
   return format(new Date(date), "dd MMMM yyyy à HH:mm", {locale: fr});
 }
 
+export const formatTime = (date: number) => {
+  return format(new Date(date), "HH:mm", {locale: fr});
+}
 export const formatNumber = (number?: number, minimumFractionDigits = 2) => {
   return number?.toLocaleString("en-Us", {
     minimumFractionDigits: 2,

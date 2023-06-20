@@ -95,6 +95,7 @@ export interface Event extends HasName {
 export interface EventEstimation {
   event?: Event
   totalExpense?: number
+  totalIncome?: number
 }
 
 export interface EventRatedExpense extends HasId {

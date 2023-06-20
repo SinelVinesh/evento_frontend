@@ -197,6 +197,13 @@ const ConfiguredForm: React.FC = () => {
             onChange: (e: any) => (eventRatedExpense.duration = e.target.value),
           },
           {
+            label: "Quantité",
+            name: "quantity",
+            type: FieldType.number,
+            selector: (data: any) => data?.quantity,
+            onChange: (e: any) => (eventRatedExpense.quantity = e.target.value),
+          },
+          {
             label: "Prix unitaire (Ar)",
             name: "unitPrice",
             type: FieldType.hidden,
@@ -258,6 +265,13 @@ const ConfiguredForm: React.FC = () => {
               id: e.target.value,
               name: variableExpenseList.find((variableExpense) => variableExpense.id === e.target.value)?.name,
             })
+          },
+          {
+            label: "Quantité",
+            name: "quantity",
+            type: FieldType.number,
+            selector: (data: any) => data?.quantity,
+            onChange: (e: any) => (eventVariableExpense.quantity = e.target.value),
           },
           {
             label: "Prix (Ar)",

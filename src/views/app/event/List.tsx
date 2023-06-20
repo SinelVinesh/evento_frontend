@@ -4,6 +4,8 @@ import List from "../../../components/generic/List";
 import {findAllEventEstimation} from "../../../services/Api";
 import {EventEstimation, Paginated} from "../../../common/appTypes";
 import {formatDateTime, formatNumber} from "../../../services/Format";
+import {CButton} from "@coreui/react";
+import {generateAffiche} from "../../../services/pdf";
 
 const ConfiguredList: React.FC = () => {
   const [totalRows, setTotalRows] = useState(0);
@@ -21,6 +23,9 @@ const ConfiguredList: React.FC = () => {
       filterData();
     }
   };
+  const generatePDF = (row: EventEstimation) => () => {
+    generateAffiche(row)
+  }
 
   const columns: ListColumn[] = [
     {
@@ -31,11 +36,6 @@ const ConfiguredList: React.FC = () => {
     {
       name: "Nom",
       selector: (row: EventEstimation) => row.event?.name,
-      sortable: true
-    },
-    {
-      name: "Type d'évènement",
-      selector: (row: EventEstimation) => row.event?.eventType?.name,
       sortable: true
     },
     {
@@ -54,10 +54,25 @@ const ConfiguredList: React.FC = () => {
       sortable: true
     },
     {
-      name: "Estimation (Ar)",
+      name: "Cout estimé (Ar)",
       selector: (row: EventEstimation) => formatNumber(row.totalExpense),
       sortable: true
     },
+    {
+      name: "Recette estimée (Ar)",
+      selector: (row: EventEstimation) => formatNumber(row.totalIncome),
+      sortable: true
+    },
+    {
+      name: "Bénéfice estimé (Ar)",
+      selector: (row: EventEstimation) => formatNumber(row.totalIncome! - row.totalExpense!),
+      sortable: true
+    },
+    {
+      name: "",
+      selector: (row: EventEstimation) => <CButton color={"primary"} onClick={generatePDF(row)}>PDF</CButton>,
+      sortable: false,
+    }
   ];
 
   const filterData = () => {

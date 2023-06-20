@@ -128,7 +128,7 @@ export const createLocation = (data?: Location) => {
 }
 
 // File upload
-const fileUploadUrl = `${base}/file-upload`
+const fileUploadUrl = `${base}/files`
 export const uploadFile = (data: FormData) => {
   return postCall(fileUploadUrl, data, true)
 }
