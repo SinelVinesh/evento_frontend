@@ -2,8 +2,8 @@ import React, {useEffect, useState} from "react";
 import {ListColumn} from "../../../common/types";
 import List from "../../../components/generic/List";
 import {formatNumber} from "services/Format";
-import {findAllArtists} from "../../../services/Api";
-import {Paginated, RatedExpense} from "../../../common/appTypes";
+import {filesUrl, findAllArtists} from "../../../services/Api";
+import {Location, Paginated, RatedExpense} from "../../../common/appTypes";
 
 const ConfiguredList: React.FC = () => {
   const [totalRows, setTotalRows] = useState(0);
@@ -13,6 +13,7 @@ const ConfiguredList: React.FC = () => {
   const [filter] = useState({page: 1} as Paginated);
   const [triggerFilter, setTriggerFilter] = useState(false);
   const apiCall = findAllArtists;
+  const linkFn = (row: RatedExpense) => `/artists/${row.id}/update`;
   const handlePageChange = (page: number) => {
     setLoading(true);
     if (currentPage !== page) {
@@ -26,6 +27,13 @@ const ConfiguredList: React.FC = () => {
       name: "Id",
       selector: (row: RatedExpense) => row.id,
       sortable: true
+    },
+    {
+      name: "Image",
+      selector: (row: Location) => <>{row.imageLink !== null && (
+        <img src={`${filesUrl}/${row.imageLink}`} alt={row.name} style={{height: '220px'}}/>)}</>,
+      sortable: true,
+      minWidth: '400px'
     },
     {
       name: "Nom",
@@ -91,6 +99,7 @@ const ConfiguredList: React.FC = () => {
       onChangePage={handlePageChange}
       filterData={filter}
       filterFn={filterFn}
+      linkFn={linkFn}
     />
   );
 };

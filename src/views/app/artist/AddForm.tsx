@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import {FieldProperties} from "../../../common/types";
 import {FieldType, ValidationType} from "../../../common/enums";
 import Form from "../../../components/generic/Form";
@@ -6,13 +6,12 @@ import withReactContent from "sweetalert2-react-content";
 import Swal, {SweetAlertIcon} from "sweetalert2";
 import Spinner from "../../../components/Spinner";
 import {useNavigate} from "react-router-dom";
-import {createRatedExpense, findAllRatedExpenseType, uploadFile} from "services/Api";
-import {RatedExpense, RatedExpenseType} from "../../../common/appTypes";
+import {createRatedExpense, uploadFile} from "services/Api";
+import {RatedExpense} from "../../../common/appTypes";
 import {InputAdornment} from "@mui/material";
 
 const ConfiguredForm: React.FC = () => {
   const [data] = useState({} as RatedExpense);
-  const [ratedExpenseTypesList, setRatedExpenseTypesList] = useState([] as RatedExpenseType[]);
   const navigate = useNavigate();
   const apiCall = createRatedExpense;
   const redirectUrl = "/artists/list";
@@ -104,11 +103,6 @@ const ConfiguredForm: React.FC = () => {
       console.log(error);
     })
   };
-  useEffect(() => {
-    findAllRatedExpenseType().then((response) => {
-      setRatedExpenseTypesList(response.data.elements);
-    })
-  }, [])
   return (
     <Form
       title={"Ajouter un artiste"}

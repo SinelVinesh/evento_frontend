@@ -164,9 +164,17 @@ export const findAllRatedExpenseType = (filter?: Paginated) => {
   let url = buildUrlWithFilter(ratedExpenseTypeUrl, filter, filters)
   return getCall(url, true)
 }
+export const getRatedExpenseType = (id: string) => {
+  return getCall(`${ratedExpenseTypeUrl}/${id}`, true)
+}
 export const createRatedExpenseType = (data?: RatedExpenseType) => {
   return postCall(ratedExpenseTypeUrl, data, true)
 }
+export const updateRatedExpenseType = (data?: RatedExpenseType) => {
+  const url = `${ratedExpenseTypeUrl}/${data?.id}`
+  return putCall(url, data, true)
+}
+
 
 // Rate type
 const rateTypeUrl = `${base}/rate-types`
@@ -207,6 +215,15 @@ export const findAllArtists = (filter?: RatedExpenseFilter) => {
   ]
   let url = buildUrlWithFilter(ratedExpenseUrl, filter, filters)
   return getCall(url, true)
+}
+
+export const getRatedExpense = (id: string) => {
+  return getCall(`${ratedExpenseUrl}/${id}`, true)
+}
+
+export const updateRatedExpense = (data?: RatedExpense) => {
+  const url = `${ratedExpenseUrl}/${data?.id}`
+  return putCall(url, data, true)
 }
 
 export const createRatedExpense = (data?: RatedExpense) => {
