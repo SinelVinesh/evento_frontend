@@ -1,18 +1,18 @@
 import React, {useEffect, useState} from "react";
 import {ListColumn} from "../../../common/types";
 import List from "../../../components/generic/List";
-import {formatNumber} from "services/Format";
-import {findAllOtherRatedExpense} from "../../../services/Api";
-import {Paginated, RatedExpense} from "../../../common/appTypes";
+import {findAllUser} from "../../../services/Api";
+import {User, UserFilter} from "../../../common/appTypes";
 
 const ConfiguredList: React.FC = () => {
   const [totalRows, setTotalRows] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(false);
-  const [data, setData] = useState([] as RatedExpense[]);
-  const [filter] = useState({page: 1} as Paginated);
+  const [data, setData] = useState([] as User[]);
+  const [filter] = useState({page: 1} as UserFilter);
   const [triggerFilter, setTriggerFilter] = useState(false);
-  const apiCall = findAllOtherRatedExpense;
+  const apiCall = findAllUser;
+  const linkFn = (row: User) => `/users/${row.id}/update`
   const handlePageChange = (page: number) => {
     setLoading(true);
     if (currentPage !== page) {
@@ -24,27 +24,17 @@ const ConfiguredList: React.FC = () => {
   const columns: ListColumn[] = [
     {
       name: "Id",
-      selector: (row: RatedExpense) => row.id,
+      selector: (row: User) => row.id,
       sortable: true
     },
     {
-      name: "Nom",
-      selector: (row: RatedExpense) => row.name,
+      name: "Nom d'utilisateur",
+      selector: (row: User) => row.username,
       sortable: true
     },
     {
-      name: "Catégorie",
-      selector: (row: RatedExpense) => row.ratedExpenseType?.name,
-      sortable: true
-    },
-    {
-      name: "Prix tarifaire (Ar)",
-      selector: (row: RatedExpense) => formatNumber(row.rentPrice),
-      sortable: true
-    },
-    {
-      name: "Type de tarif",
-      selector: (row: RatedExpense) => row.ratedExpenseType?.rateType?.name,
+      name: "email",
+      selector: (row: User) => row.email,
       sortable: true
     },
   ];
@@ -85,12 +75,13 @@ const ConfiguredList: React.FC = () => {
     <List
       data={data}
       columns={columns}
-      title={"Liste des dépenses tarifées"}
+      title={"Liste des utilisateurs"}
       totalRows={totalRows}
       loading={loading}
       onChangePage={handlePageChange}
       filterData={filter}
       filterFn={filterFn}
+      linkFn={linkFn}
     />
   );
 };

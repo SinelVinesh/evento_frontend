@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import {ListColumn} from "../../../common/types";
 import List from "../../../components/generic/List";
 import {formatNumber} from "services/Format";
-import {findAllOtherRatedExpense} from "../../../services/Api";
+import {findAllArtists} from "../../../services/Api";
 import {Paginated, RatedExpense} from "../../../common/appTypes";
 
 const ConfiguredList: React.FC = () => {
@@ -12,7 +12,7 @@ const ConfiguredList: React.FC = () => {
   const [data, setData] = useState([] as RatedExpense[]);
   const [filter] = useState({page: 1} as Paginated);
   const [triggerFilter, setTriggerFilter] = useState(false);
-  const apiCall = findAllOtherRatedExpense;
+  const apiCall = findAllArtists;
   const handlePageChange = (page: number) => {
     setLoading(true);
     if (currentPage !== page) {

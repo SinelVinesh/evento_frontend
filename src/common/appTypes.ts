@@ -20,6 +20,7 @@ export interface Role extends HasName {
 
 export interface User extends HasId {
   username?: string
+  password?: string
   email?: string
   role?: Role
 }
@@ -70,6 +71,10 @@ export interface RatedExpense extends HasName {
   imageLink?: string
 }
 
+export interface RatedExpenseFilter extends Paginated {
+  ratedExpenseType?: number
+}
+
 export interface VariableExpense extends HasName {
 }
 
@@ -116,3 +121,4 @@ export interface EventSeatCategory extends HasId {
   price?: number
   locationSeatCategory?: LocationSeatCategory
 }
+

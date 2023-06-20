@@ -10,7 +10,10 @@ import {
   MaterialFilter,
   Paginated,
   RatedExpense,
-  RatedExpenseType
+  RatedExpenseFilter,
+  RatedExpenseType,
+  User,
+  UserFilter
 } from "../common/appTypes";
 
 /* api calls */
@@ -159,9 +162,30 @@ export const findAllRateType = (filter?: Paginated) => {
 
 // Rated expense
 const ratedExpenseUrl = `${base}/rated-expenses`
-export const findAllRatedExpense = (filter?: Paginated) => {
+export const findAllRatedExpense = (filter?: RatedExpenseFilter) => {
   const filters = [
-    {field: 'page', name: 'page'}
+    {field: 'page', name: 'page'},
+    {field: 'ratedExpenseType', name: 'ratedExpenseType.id'}
+  ]
+  let url = buildUrlWithFilter(ratedExpenseUrl, filter, filters)
+  return getCall(url, true)
+}
+
+export const findAllOtherRatedExpense = (filter?: RatedExpenseFilter) => {
+  filter = {...filter, ratedExpenseType: 1}
+  const filters = [
+    {field: 'page', name: 'page'},
+    {field: 'ratedExpenseType', name: 'noteq_ratedExpenseType.id'}
+  ]
+  let url = buildUrlWithFilter(ratedExpenseUrl, filter, filters)
+  return getCall(url, true)
+}
+
+export const findAllArtists = (filter?: RatedExpenseFilter) => {
+  filter = {...filter, ratedExpenseType: 1}
+  const filters = [
+    {field: 'page', name: 'page'},
+    {field: 'ratedExpenseType', name: 'ratedExpenseType.id'}
   ]
   let url = buildUrlWithFilter(ratedExpenseUrl, filter, filters)
   return getCall(url, true)
@@ -223,5 +247,29 @@ export const getEvent = (id: number) => {
 
 export const updateEvent = (data?: Event) => {
   const url = `${eventUrl}/${data?.id}`
+  return putCall(url, data, true)
+}
+
+// Users
+const userUrl = `${base}/user`
+export const findAllUser = (filter?: UserFilter) => {
+  const filters = [
+    {field: 'page', name: 'page'},
+    {field: 'role', name: 'role.id'}
+  ]
+  filter = {...filter, role: 2}
+  let url = buildUrlWithFilter(userUrl, filter, filters)
+  return getCall(url, true)
+}
+export const createUser = (data?: User) => {
+  return postCall(userUrl, data, true)
+}
+
+export const getUser = (id: string) => {
+  return getCall(`${userUrl}/${id}`, true)
+}
+
+export const updateUser = (data?: User) => {
+  const url = `${userUrl}/${data?.id}`
   return putCall(url, data, true)
 }

@@ -13,6 +13,10 @@ const LocationTypeAddForm = React.lazy(() => import('./views/app/locationType/Ad
 const LocationList = React.lazy(() => import('./views/app/location/List'))
 const LocationAddForm = React.lazy(() => import('./views/app/location/AddForm'))
 
+// Artistes
+const ArtistList = React.lazy(() => import('./views/app/artist/List'))
+const ArtistAddForm = React.lazy(() => import('./views/app/artist/AddForm'))
+
 // Type de dépense tarifée
 const RatedExpenseTypeList = React.lazy(() => import('./views/app/ratedExpenseType/List'))
 const RatedExpenseTypeAddForm = React.lazy(() => import('./views/app/ratedExpenseType/AddForm'))
@@ -33,6 +37,12 @@ const EventTypeAddForm = React.lazy(() => import('./views/app/eventType/AddForm'
 const EventList = React.lazy(() => import('./views/app/event/List'))
 const EventAddForm = React.lazy(() => import('./views/app/event/AddForm'))
 const EventUpdateForm = React.lazy(() => import('./views/app/event/UpdateForm'))
+
+// Utilisateurs
+const UserList = React.lazy(() => import('./views/app/user/List'))
+const UserAddForm = React.lazy(() => import('./views/app/user/AddForm'))
+const UserUpdateForm = React.lazy(() => import('./views/app/user/UpdateForm'))
+
 const routes = [
   {path: '/monthly-profit/list', element: Login},
   {path: '/materials/list', element: MaterialList},
@@ -52,6 +62,11 @@ const routes = [
   {path: '/events/list', element: EventList},
   {path: '/events/create', element: EventAddForm},
   {path: '/events/:id/update', element: EventUpdateForm},
+  {path: '/artists/list', element: ArtistList},
+  {path: '/artists/create', element: ArtistAddForm},
+  {path: '/users/list', element: UserList},
+  {path: '/users/create', element: UserAddForm},
+  {path: '/users/:id/update', element: UserUpdateForm},
 ]
 
 export default routes

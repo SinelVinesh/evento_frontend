@@ -15,7 +15,7 @@ const ConfiguredForm: React.FC = () => {
   const [ratedExpenseTypesList, setRatedExpenseTypesList] = useState([] as RatedExpenseType[]);
   const navigate = useNavigate();
   const apiCall = createRatedExpense;
-  const redirectUrl = "/rated-expenses/list";
+  const redirectUrl = "/artists/list";
   const properties: FieldProperties[] = [
     {
       label: "Nom",
@@ -25,19 +25,6 @@ const ConfiguredForm: React.FC = () => {
       onChange: (e) => (data.name = e.target.value),
       validators: [
         {validationType: ValidationType.required, feedback: "Veuillez saisir un nom"}
-      ]
-    }, {
-      label: "Catégorie",
-      name: "ratedExpenseType",
-      type: FieldType.select,
-      options: ratedExpenseTypesList.map((ratedExpenseType) => ({
-        value: ratedExpenseType.id!,
-        label: `${ratedExpenseType.name!} (${ratedExpenseType.rateType!.name!})`
-      })),
-      selector: (data) => data?.ratedExpenseType?.id,
-      onChange: (e) => (data.ratedExpenseType = {id: e.target.value}),
-      validators: [
-        {validationType: ValidationType.required, feedback: "Veuillez choisir une catégorie"}
       ]
     },
     {
@@ -53,9 +40,19 @@ const ConfiguredForm: React.FC = () => {
       inputProps: {
         startAdornment: <InputAdornment position="start">Ar</InputAdornment>
       }
+    },
+    {
+      label: "Image",
+      name: "file",
+      type: FieldType.file,
+      selector: (data) => data?.image?.name,
+      onChange: (e) => {
+        data.image = e.target.files[0];
+      },
     }
   ];
   const submit = () => {
+    data.ratedExpenseType = {id: 1}
     const swal = withReactContent(Swal);
     const loading = {
       title: "Ajout en cours...",
@@ -78,7 +75,7 @@ const ConfiguredForm: React.FC = () => {
         .then((response) => {
           const swalData = {
             icon: "success" as SweetAlertIcon,
-            title: "La dépense tarifée a été ajouté avec succès",
+            title: "L'artiste a été ajouté avec succès",
             timer: 1000,
             showConfirmButton: false
           };
@@ -109,13 +106,12 @@ const ConfiguredForm: React.FC = () => {
   };
   useEffect(() => {
     findAllRatedExpenseType().then((response) => {
-      const data = response.data.elements.filter((ratedExpenseType: RatedExpenseType) => ratedExpenseType.id !== 1);
-      setRatedExpenseTypesList(data);
+      setRatedExpenseTypesList(response.data.elements);
     })
   }, [])
   return (
     <Form
-      title={"Ajouter une dépense tarifée"}
+      title={"Ajouter un artiste"}
       data={data}
       properties={properties}
       submitFn={submit}

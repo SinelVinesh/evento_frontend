@@ -16,6 +16,24 @@ if (json !== null && json !== undefined) {
 const _nav_admin = [
   {
     component: CNavGroup,
+    name: 'Utilisateurs',
+    to: '/users',
+    icon: <CIcon icon={cilChevronDoubleRight} customClassName="nav-icon"/>,
+    items: [
+      {
+        component: CNavItem,
+        name: 'Liste',
+        to: '/users/list',
+      },
+      {
+        component: CNavItem,
+        name: "Formulaire d'ajout",
+        to: '/users/create',
+      }
+    ],
+  },
+  {
+    component: CNavGroup,
     name: 'Type de lieu',
     to: '/location-types',
     icon: <CIcon icon={cilChevronDoubleRight} customClassName="nav-icon"/>,
@@ -53,6 +71,24 @@ const _nav_admin = [
   {
     component: CNavTitle,
     name: 'Dépenses'
+  },
+  {
+    component: CNavGroup,
+    name: 'Artistes',
+    to: '/artists',
+    icon: <CIcon icon={cilChevronDoubleRight} customClassName="nav-icon"/>,
+    items: [
+      {
+        component: CNavItem,
+        name: 'Liste',
+        to: '/artists/list',
+      },
+      {
+        component: CNavItem,
+        name: "Formulaire d'ajout",
+        to: '/artists/create',
+      }
+    ],
   },
   {
     component: CNavGroup,
