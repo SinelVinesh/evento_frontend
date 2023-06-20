@@ -60,6 +60,7 @@ export interface ListColumn {
   name: string
   selector: (data: any) => any
   sortable: boolean
+  minWidth?: string
 }
 
 export interface Filter {

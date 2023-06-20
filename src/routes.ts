@@ -8,10 +8,12 @@ const MaterialAddForm = React.lazy(() => import('./views/app/material/AddForm'))
 // Type de lieu
 const LocationTypeList = React.lazy(() => import('./views/app/locationType/List'))
 const LocationTypeAddForm = React.lazy(() => import('./views/app/locationType/AddForm'))
+const LocationTypeUpdateForm = React.lazy(() => import('./views/app/locationType/UpdateForm'))
 
 // Lieu
 const LocationList = React.lazy(() => import('./views/app/location/List'))
 const LocationAddForm = React.lazy(() => import('./views/app/location/AddForm'))
+const LocationUpdateForm = React.lazy(() => import('./views/app/location/UpdateForm'))
 
 // Artistes
 const ArtistList = React.lazy(() => import('./views/app/artist/List'))
@@ -49,8 +51,10 @@ const routes = [
   {path: '/materials/create', element: MaterialAddForm},
   {path: '/location-types/list', element: LocationTypeList},
   {path: '/location-types/create', element: LocationTypeAddForm},
+  {path: '/location-types/:id/update', element: LocationTypeUpdateForm},
   {path: '/locations/list', element: LocationList},
   {path: '/locations/create', element: LocationAddForm},
+  {path: '/locations/:id/update', element: LocationUpdateForm},
   {path: '/rated-expense-types/list', element: RatedExpenseTypeList},
   {path: '/rated-expense-types/create', element: RatedExpenseTypeAddForm},
   {path: '/rated-expenses/list', element: RatedExpenseList},

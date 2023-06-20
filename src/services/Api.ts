@@ -82,7 +82,7 @@ const buildUrlWithFilter = (url: string, data: any, filters: DataFilter[]) => {
 }
 
 const base = 'http://localhost:8080'
-
+export const filesUrl = `${base}/files`
 // Login
 const loginUrl = `${base}/user/authenticate`
 export const login = (data: AuthRequest) => {
@@ -112,8 +112,17 @@ export const findAllLocationType = (filter?: Paginated) => {
   return getCall(url, true)
 }
 
-export const createLocationType = (data?: Material) => {
+export const getLocationType = (id: string) => {
+  return getCall(`${locationTypeUrl}/${id}`, true)
+}
+
+export const createLocationType = (data?: Location) => {
   return postCall(locationTypeUrl, data, true)
+}
+
+export const updateLocationType = (data?: Location) => {
+  const url = `${locationTypeUrl}/${data?.id}`
+  return putCall(url, data, true)
 }
 
 // Location
@@ -126,8 +135,17 @@ export const findAllLocation = (filter?: Paginated) => {
   return getCall(url, true)
 }
 
+export const getLocation = (id: string) => {
+  return getCall(`${locationUrl}/${id}`, true)
+}
+
 export const createLocation = (data?: Location) => {
   return postCall(locationUrl, data, true)
+}
+
+export const updateLocation = (data?: Location) => {
+  const url = `${locationUrl}/${data?.id}`
+  return putCall(url, data, true)
 }
 
 // File upload
