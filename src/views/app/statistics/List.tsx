@@ -4,8 +4,6 @@ import List from "../../../components/generic/List";
 import {findAllEventEstimation} from "../../../services/Api";
 import {EventEstimation, Paginated} from "../../../common/appTypes";
 import {formatNumber} from "../../../services/Format";
-import {CButton} from "@coreui/react";
-import {generateAffiche} from "../../../services/pdf";
 import {useNavigate} from "react-router-dom";
 
 const ConfiguredList: React.FC = () => {
@@ -16,7 +14,7 @@ const ConfiguredList: React.FC = () => {
   const [filter] = useState({page: 1} as Paginated);
   const [triggerFilter, setTriggerFilter] = useState(false);
   const apiCall = findAllEventEstimation;
-  const fnLink = (row: any) => `/events/${row.id}/update`;
+  const fnLink = (row: any) => `/statistics/${row.id}`;
   const navigate = useNavigate();
   const handlePageChange = (page: number) => {
     setLoading(true);
@@ -25,9 +23,6 @@ const ConfiguredList: React.FC = () => {
       filterData();
     }
   };
-  const generatePDF = (row: EventEstimation) => () => {
-    generateAffiche(row)
-  }
 
   const columns: ListColumn[] = [
     {
@@ -41,46 +36,38 @@ const ConfiguredList: React.FC = () => {
       sortable: true
     },
     {
-      name: "Status",
-      selector: (row: EventEstimation) => row.event?.eventStatus?.name,
+      name: "Montant recette (Ar)",
+      selector: (row: EventEstimation) => formatNumber(row.realIncome),
       sortable: true
     },
     {
-      name: "Cout estimé (Ar)",
+      name: "Montant dépenses (Ar)",
       selector: (row: EventEstimation) => formatNumber(row.totalExpense),
       sortable: true
     },
     {
-      name: "Recette estimé (Ar)",
-      selector: (row: EventEstimation) => formatNumber(row.estimateIncome!),
+      name: "Montant Bénéfice brut (Ar)",
+      selector: (row: EventEstimation) => formatNumber(row.realIncome! - row.totalExpense!),
       sortable: true
     },
     {
-      name: "Bénéfice estimé (Ar)",
-      selector: (row: EventEstimation) => formatNumber(row.estimateIncome! - row.totalExpense!),
+      name: "Taxe (Ar)",
+      selector: (row: EventEstimation) => formatNumber((row.realIncome! - row.totalExpense!) < 0 ? 0 : row.event?.taxe! * (row.realIncome! - row.totalExpense!)) + ` (${row.event?.taxe! * 100}%)`,
       sortable: true
     },
     {
-      name: "",
-      selector: (row: EventEstimation) => <CButton color={"primary"} onClick={generatePDF(row)}>PDF</CButton>,
-      sortable: false,
+      name: "Bénéfice net (Ar)",
+      selector: (row: EventEstimation) => formatNumber((row.realIncome! - row.totalExpense!) < 0 ? 0 : (1 - row.event?.taxe!) * (row.realIncome! - row.totalExpense!)),
+      sortable: true
     },
-    {
-      name: "",
-      selector: (row: EventEstimation) =>
-        <>{row.event?.eventStatus?.id == 1 && (
-          <CButton color={"primary"}
-                   onClick={() => navigate(`/events/${row.event?.id}/sales`)}>Vente</CButton>)}
-        </>,
-      sortable: false,
-    }
   ];
 
   const filterData = () => {
     apiCall(filter)
       .then((response) => {
+        const data = response.data.elements.filter((e: EventEstimation) => e.event?.eventStatus?.id === 3);
         setTotalRows(response.data.count);
-        setData(response.data.elements);
+        setData(data);
         setLoading(false);
       })
       .catch((error) => {
@@ -112,7 +99,7 @@ const ConfiguredList: React.FC = () => {
     <List
       data={data}
       columns={columns}
-      title={"Liste des évènements"}
+      title={"Statistiques des evenements"}
       totalRows={totalRows}
       loading={loading}
       onChangePage={handlePageChange}

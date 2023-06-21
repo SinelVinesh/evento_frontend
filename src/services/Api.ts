@@ -12,6 +12,7 @@ import {
   RatedExpense,
   RatedExpenseFilter,
   RatedExpenseType,
+  Setting,
   User,
   UserFilter
 } from "../common/appTypes";
@@ -286,6 +287,10 @@ export const findAllEventEstimation = (filter?: Paginated) => {
   return getCall(url, true)
 }
 
+export const getEventEstimation = (id: string) => {
+  return getCall(`${eventEstimationUrl}/${id}`, true)
+}
+
 // Event
 const eventUrl = `${base}/events`
 export const createEvent = (data?: Event) => {
@@ -323,4 +328,29 @@ export const getUser = (id: string) => {
 export const updateUser = (data?: User) => {
   const url = `${userUrl}/${data?.id}`
   return putCall(url, data, true)
+}
+
+
+// Settings
+const settingUrl = `${base}/settings`
+
+export const findAllSetting = (filter?: Paginated) => {
+  const filters = [
+    {field: 'page', name: 'page'}
+  ]
+  let url = buildUrlWithFilter(settingUrl, filter, filters)
+  return getCall(url, true)
+}
+
+export const createSetting = (data?: Setting) => {
+  return postCall(settingUrl, data, true)
+}
+
+export const updateSetting = (data?: Setting) => {
+  const url = `${settingUrl}/${data?.id}`
+  return putCall(url, data, true)
+}
+
+export const getSetting = (id: string) => {
+  return getCall(`${settingUrl}/${id}`, true)
 }

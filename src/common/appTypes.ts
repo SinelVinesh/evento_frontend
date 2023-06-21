@@ -95,12 +95,15 @@ export interface Event extends HasName {
   ratedExpenses?: EventRatedExpense[]
   variableExpenses?: EventVariableExpense[]
   eventSeatCategories?: EventSeatCategory[]
+  taxe?: number
 }
 
 export interface EventEstimation {
   event?: Event
   totalExpense?: number
-  totalIncome?: number
+  estimateIncome?: number
+  realIncome?: number
+  realIncomeWithTaxe?: number
 }
 
 export interface EventRatedExpense extends HasId {
@@ -120,5 +123,9 @@ export interface EventVariableExpense extends HasId {
 export interface EventSeatCategory extends HasId {
   price?: number
   locationSeatCategory?: LocationSeatCategory
+  sales?: number
 }
 
+export interface Setting extends HasName {
+  value?: number
+}

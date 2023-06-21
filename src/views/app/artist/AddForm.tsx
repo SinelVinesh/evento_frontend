@@ -12,6 +12,7 @@ import {InputAdornment} from "@mui/material";
 
 const ConfiguredForm: React.FC = () => {
   const [data] = useState({} as RatedExpense);
+  const [tempImage, setTempImage] = useState(undefined as any);
   const navigate = useNavigate();
   const apiCall = createRatedExpense;
   const redirectUrl = "/artists/list";
@@ -47,6 +48,11 @@ const ConfiguredForm: React.FC = () => {
       selector: (data) => data?.image?.name,
       onChange: (e) => {
         data.image = e.target.files[0];
+        let reader = new FileReader();
+        let url = reader.readAsDataURL(data.image);
+        reader.onloadend = (e) => {
+          setTempImage(reader.result);
+        }
       },
     }
   ];
@@ -110,6 +116,7 @@ const ConfiguredForm: React.FC = () => {
       properties={properties}
       submitFn={submit}
       submitText={"Enregistrer"}
+      bodyTop={<img src={tempImage} style={{height: "220px"}}/>}
     />
   );
 };

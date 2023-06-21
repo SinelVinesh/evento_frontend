@@ -112,7 +112,10 @@ const ConfiguredForm: React.FC = () => {
       type: FieldType.select,
       options: locationList.map((eventType) => ({value: eventType.id!, label: eventType.name!})),
       selector: (data) => data?.location?.id,
-      onChange: (e) => (data.location = {id: e.target.value}),
+      onChange: (e) => {
+        data.location = {id: e.target.value};
+        setLocationSeatCategories(locationList?.find((location: Location) => location.id == e.target.value)?.locationSeatCategories!)
+      },
       validators: [
         {validationType: ValidationType.required, feedback: "Veuillez choisir un lieu"}
       ]

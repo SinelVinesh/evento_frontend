@@ -1,9 +1,9 @@
 import React from "react";
-import { CButton, CCard, CCardBody, CCarousel, CCarouselItem, CCol, CImage, CRow } from "@coreui/react";
+import {CButton, CCard, CCardBody, CCarousel, CCarouselItem, CCol, CImage, CRow} from "@coreui/react";
 import Datatable from "./Datatable";
-import { useNavigate } from "react-router-dom";
-import { SheetSectionProperties } from "../../common/types";
-import { SheetSectionType } from "../../common/enums";
+import {useNavigate} from "react-router-dom";
+import {SheetSectionProperties} from "../../common/types";
+import {SheetSectionType} from "../../common/enums";
 
 interface SheetProps {
   title: string
@@ -13,7 +13,7 @@ interface SheetProps {
   editable: boolean
 }
 
-const Sheet: React.FC<SheetProps> = ({ title, properties, data, deletable, editable }) => {
+const Sheet: React.FC<SheetProps> = ({title, properties, data, deletable, editable}) => {
   const navigate = useNavigate()
   return (
     <>
@@ -31,12 +31,12 @@ const Sheet: React.FC<SheetProps> = ({ title, properties, data, deletable, edita
                   </p>
                   {property.type === SheetSectionType.images && (
                     <CRow>
-                      <CCol sm={{ span: 6, offset: 3 }}>
+                      <CCol sm={{span: 6, offset: 3}}>
                         <CCarousel controls indicators>
                           {Array.isArray(property.selector(data)) &&
                             property.selector(data).map((image: any, index: string) => (
                               <CCarouselItem key={image}>
-                                <CImage className={'d-block w-100 h-50'} src={image} alt={index} />
+                                <CImage className={'d-block w-100 h-50'} src={image} alt={index}/>
                               </CCarouselItem>
                             ))}
                         </CCarousel>
@@ -45,23 +45,23 @@ const Sheet: React.FC<SheetProps> = ({ title, properties, data, deletable, edita
                   )}
                   {property.type === SheetSectionType.image && (
                     <CRow>
-                      <CCol sm={{ span: 6 }}>
-                        <CImage className={'profile-photo'} src={property.selector(data)} />
+                      <CCol sm={{span: 6}}>
+                        <CImage className={'profile-photo'} src={property.selector(data)}/>
                       </CCol>
                     </CRow>
                   )}
                   {property.type === SheetSectionType.table && (
                     <>
                       <CRow>{property.table?.header}</CRow>
-                    <CRow>
-                      <Datatable data={property.selector(data)} columns={property.table!.columns}/>
-                    </CRow>
+                      <CRow>
+                        <Datatable data={property.selector(data)} columns={property.table!.columns}/>
+                      </CRow>
                     </>
                   )}
                   {property.type === SheetSectionType.text && property.selector(data)}
-                  {property.type === SheetSectionType.component && property.component}
                 </CCol>
               </CRow>
+              {property.type === SheetSectionType.component && property.component}
             </>
           ))}
           <CRow>

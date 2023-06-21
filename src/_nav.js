@@ -34,6 +34,24 @@ const _nav_admin = [
   },
   {
     component: CNavGroup,
+    name: 'Paramètres',
+    to: '/settings',
+    icon: <CIcon icon={cilChevronDoubleRight} customClassName="nav-icon"/>,
+    items: [
+      {
+        component: CNavItem,
+        name: 'Liste',
+        to: '/settings/list',
+      },
+      {
+        component: CNavItem,
+        name: "Formulaire d'ajout",
+        to: '/settings/create',
+      }
+    ],
+  },
+  {
+    component: CNavGroup,
     name: 'Type de lieu',
     to: '/location-types',
     icon: <CIcon icon={cilChevronDoubleRight} customClassName="nav-icon"/>,
@@ -187,6 +205,12 @@ const _nav_user = [
         to: '/events/create',
       }
     ],
+  },
+  {
+    component: CNavItem,
+    name: 'Statistiques',
+    to: '/statistics',
+    icon: <CIcon icon={cilChevronDoubleRight} customClassName="nav-icon"/>,
   },
 ]
 

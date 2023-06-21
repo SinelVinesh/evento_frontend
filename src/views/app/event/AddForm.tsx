@@ -123,11 +123,6 @@ const ConfiguredForm: React.FC = () => {
       onChange: (e) => (data.startDate = new Date(e.target.value).getTime()),
       validators: [
         {validationType: ValidationType.required, feedback: "Veuillez saisir une date"},
-        {
-          validationType: ValidationType.dateAfter,
-          args: {date: Date.now()},
-          feedback: "La date de début doit être supérieur à la date d'aujourd'hui"
-        }
       ],
     },
     {

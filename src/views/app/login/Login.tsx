@@ -65,7 +65,7 @@ const Login = () => {
         sessionStorage.setItem("userId", response.userId);
         sessionStorage.setItem("username", response.username);
         sessionStorage.setItem("role", JSON.stringify(response.role))
-        const home: string = response.role.id === 1 ? "/dashboard" : "/loans/list";
+        const home: string = response.role.id === 1 ? "/locations/list" : "/statistics";
         const swalData = {
           icon: "success" as SweetAlertIcon,
           title: "Connexion réussie",
